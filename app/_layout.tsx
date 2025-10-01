@@ -11,6 +11,7 @@ import { useAppSlice } from '@/slices';
 import { getUserAsync } from '@/services';
 import Provider from '@/providers';
 import { User } from '@/types';
+import '../i18n.config';
 
 // keep the splash screen visible while complete fetching resources
 SplashScreen.preventAutoHideAsync();
