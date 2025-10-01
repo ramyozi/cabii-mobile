@@ -5,7 +5,7 @@ import { images } from '@/theme';
 
 const styles = StyleSheet.create({
   logo: {
-    width: 32,
+    width: 64,
     height: 32,
   },
 });
