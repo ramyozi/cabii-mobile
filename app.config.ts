@@ -1,11 +1,13 @@
-import { ConfigContext, ExpoConfig } from 'expo/config';
+import {ConfigContext, ExpoConfig} from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
-  const expoProjectId = process.env.EXPO_PROJECT_ID ?? '18adc0d0-eb1d-11e9-8009-d524ed5cc4a7';
-  const expoConfig: ExpoConfig = {
+  const expoProjectId = process.env.EXPO_PROJECT_ID;
+  // console.log('[##] expo config', expoConfig);
+  return {
     ...config,
-    slug: process.env.EXPO_SLUG ?? 'react-native-app',
-    name: process.env.EXPO_NAME ?? 'React Native App',
+    slug: process.env.EXPO_SLUG,
+    name: process.env.EXPO_NAME,
+    owner: 'ramzi.benmansour',
     version: '1.0.0',
     orientation: 'portrait',
     ios: {
@@ -23,11 +25,14 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       favicon: './assets/images/logo-sm.png',
     },
     updates: {
-      url: `https://u.expo.dev/${expoProjectId}`,
+      url: `https://u.expo.dev/4625ddf2-64db-4f62-8aeb-b307a5bb0332`,
+    },
+    runtimeVersion: {
+      policy: "appVersion",
     },
     extra: {
       ...config.extra,
-      eas: { projectId: expoProjectId },
+      eas: { projectId: "4625ddf2-64db-4f62-8aeb-b307a5bb0332" },
       env: process.env.ENV ?? 'development',
       apiUrl: process.env.API_URL ?? 'https://localhost:3000',
     },
@@ -62,6 +67,4 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
     ],
   };
-  // console.log('[##] expo config', expoConfig);
-  return expoConfig;
 };
