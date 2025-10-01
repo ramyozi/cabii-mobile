@@ -1,5 +1,5 @@
 import { Image as ExpoImage, ImageContentFit, ImageProps as ExpoImageProps } from 'expo-image';
-import { StyleProp, ImageStyle, ImageSourcePropType } from 'react-native';
+import { ImageSourcePropType, ImageStyle, StyleProp } from 'react-native';
 
 export interface ImageProps extends Omit<ExpoImageProps, 'source' | 'placeholder' | 'style'> {
   source: ImageSourcePropType;

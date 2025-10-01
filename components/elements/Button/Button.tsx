@@ -1,15 +1,15 @@
 import {
-  Pressable,
-  PressableProps,
-  Text,
   ActivityIndicator,
   GestureResponderEvent,
   ImageSourcePropType,
-  StyleProp,
-  ViewStyle,
   ImageStyle,
-  TextStyle,
+  Pressable,
+  PressableProps,
+  StyleProp,
   StyleSheet,
+  Text,
+  TextStyle,
+  ViewStyle,
 } from 'react-native';
 import { colors } from '@/theme';
 import Image from '../Image';

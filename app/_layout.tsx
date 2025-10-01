@@ -1,10 +1,10 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import BottomSheetContents from '@/components/layouts/BottomSheetContents';
 import BottomSheet from '@/components/elements/BottomSheet';
-import { useDataPersist, DataPersistKeys } from '@/hooks';
+import { DataPersistKeys, useDataPersist } from '@/hooks';
 import useColorScheme from '@/hooks/useColorScheme';
-import { loadImages, loadFonts, colors } from '@/theme';
+import { colors, loadFonts, loadImages } from '@/theme';
 import { Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useAppSlice } from '@/slices';

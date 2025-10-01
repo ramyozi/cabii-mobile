@@ -1,4 +1,4 @@
-import { test, expect } from '@jest/globals';
+import { expect, test } from '@jest/globals';
 import { render, screen } from '@testing-library/react-native';
 import Button from './Button';
 

@@ -2,9 +2,9 @@ name: Test CI
 
 on:
   pull_request:
-    branches: ['*']
+    branches: [ '*' ]
   push:
-    branches: ['dev', 'staging', 'main']
+    branches: [ 'dev', 'staging', 'main' ]
 
 jobs:
   test:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [ 20.x ]
     steps:
       # checkout the repository
       - name: Checkout repository

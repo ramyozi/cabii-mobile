@@ -1,4 +1,4 @@
-import { ExpoConfig, ConfigContext } from 'expo/config';
+import { ConfigContext, ExpoConfig } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   const expoProjectId = process.env.EXPO_PROJECT_ID ?? '18adc0d0-eb1d-11e9-8009-d524ed5cc4a7';
@@ -10,8 +10,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     orientation: 'portrait',
     ios: {
       ...config.ios,
-      bundleIdentifier:
-        process.env.EXPO_IOS_BUNDLE_IDENTIFIER ?? 'fr.cabii.app',
+      bundleIdentifier: process.env.EXPO_IOS_BUNDLE_IDENTIFIER ?? 'fr.cabii.app',
     },
     android: {
       ...config.android,

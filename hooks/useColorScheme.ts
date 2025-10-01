@@ -1,6 +1,6 @@
 import { isMobile } from '@/utils/deviceInfo';
-import { useState, useEffect } from 'react';
-import { useColorScheme as useRNColorScheme, ColorSchemeName } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ColorSchemeName, useColorScheme as useRNColorScheme } from 'react-native';
 
 type ColorSchemeResult = {
   colorScheme: ColorSchemeName;

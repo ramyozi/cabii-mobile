@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Keyboard, KeyboardEvent } from 'react-native';
 
 export function useKeyboard() {

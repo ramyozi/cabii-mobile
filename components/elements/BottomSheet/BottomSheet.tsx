@@ -1,10 +1,10 @@
-import React, { useRef, memo, useEffect } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { memo, useEffect, useRef } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import RNBottomSheet, {
-  BottomSheetProps as RNBottomSheetProps,
   BottomSheetBackdrop,
-  BottomSheetScrollView,
   BottomSheetBackdropProps,
+  BottomSheetProps as RNBottomSheetProps,
+  BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
 import { isWeb } from '@/utils/deviceInfo';
 

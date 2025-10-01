@@ -1,4 +1,4 @@
-import { StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { LinearGradient, LinearGradientProps } from 'expo-linear-gradient';
 import Button, { ButtonProps } from '../Button';
 

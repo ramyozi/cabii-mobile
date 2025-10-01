@@ -1,6 +1,6 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import GradientButton from '@/components/elements/GradientButton';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import useColorScheme from '@/hooks/useColorScheme';
 import { colors } from '@/theme';
 
