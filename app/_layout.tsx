@@ -2,15 +2,15 @@ import { Fragment, useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import BottomSheetContents from '@/components/layouts/BottomSheetContents';
 import BottomSheet from '@/components/elements/BottomSheet';
-import { DataPersistKeys, useDataPersist } from '@/hooks';
 import useColorScheme from '@/hooks/useColorScheme';
 import { colors, loadFonts, loadImages } from '@/theme';
-import { Slot } from 'expo-router';
+import { Redirect, Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useAppSlice } from '@/slices';
 import { getUserAsync } from '@/services';
 import Provider from '@/providers';
 import { User } from '@/types';
+import { Storage, StorageKeys } from '@/utils/storage';
 import '../i18n.config';
 
 // keep the splash screen visible while complete fetching resources
@@ -18,8 +18,7 @@ SplashScreen.preventAutoHideAsync();
 
 function Router() {
   const { isDark } = useColorScheme();
-  const { dispatch, setUser, setLoggedIn } = useAppSlice();
-  const { setPersistData, getPersistData } = useDataPersist();
+  const { dispatch, setUser, setLoggedIn, setTokens, loggedIn, checked } = useAppSlice();
   const [isOpen, setOpen] = useState(false);
 
   /**
@@ -31,33 +30,43 @@ function Router() {
         // preload assets
         await Promise.all([loadImages(), loadFonts()]);
 
-        // fetch & store user data to store (fake promise function to simulate async function)
-        const user = await getUserAsync();
-        dispatch(setUser(user));
-        dispatch(setLoggedIn(!!user));
-        if (user) setPersistData<User>(DataPersistKeys.USER, user);
+        // restore tokens from storage
+        const accessToken = await Storage.getItem(StorageKeys.accessToken);
+        const refreshToken = await Storage.getItem(StorageKeys.refreshToken);
 
-        // hide splash screen
+        if (accessToken && refreshToken) {
+          dispatch(setTokens({ accessToken, refreshToken }));
+          dispatch(setLoggedIn(true));
+
+          // fetch user profile (optional but recommended)
+          try {
+            const user = await getUserAsync();
+            if (user) dispatch(setUser(user));
+          } catch (e) {
+            console.warn('Failed to fetch user profile', e);
+          }
+        } else {
+          dispatch(setLoggedIn(false));
+        }
+      } catch (e) {
+        console.error('App init error', e);
+        dispatch(setLoggedIn(false));
+      } finally {
+        // hide splash screen no matter what
         SplashScreen.hideAsync();
         setOpen(true);
-      } catch {
-        // if preload failed, try to get user data from persistent storage
-        getPersistData<User>(DataPersistKeys.USER)
-          .then(user => {
-            if (user) dispatch(setUser(user));
-            dispatch(setLoggedIn(!!user));
-          })
-          .finally(() => {
-            // hide splash screen
-            SplashScreen.hideAsync();
-
-            // show bottom sheet
-            setOpen(true);
-          });
       }
     })();
   }, []);
 
+  if (!checked) return null;
+
+  if (!loggedIn) {
+    // clean layout for auth
+    return <Slot />;
+  }
+
+  // full layout for main app
   return (
     <Fragment>
       <Slot />
