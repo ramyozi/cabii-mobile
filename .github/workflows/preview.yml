@@ -1,6 +1,5 @@
 name: Preview Channel CI
 
-#test
 on:
   pull_request:
     branches: [ '*' ]
@@ -57,15 +56,15 @@ jobs:
         uses: tj-actions/branch-names@v8
 
       # eas update (PR)
-      - name: EAS update
+      - name: EAS update (PR)
         if: github.event_name == 'pull_request'
-        run: eas update --branch ${{ steps.branch-name.outputs.current_branch }} --message "${{ github.event.pull_request.title }}"
+        run: |
+          COMMIT_MESSAGE=$(printf "%s" "${{ github.event.pull_request.title }}")
+          eas update --branch ${{ steps.branch-name.outputs.current_branch }} --message "$COMMIT_MESSAGE"
 
       # eas update (PUSH)
-      - name: EAS update
+      - name: EAS update (PUSH)
         if: github.event_name == 'push'
         run: |
-          eas update --branch ${{ steps.branch-name.outputs.current_branch }} --message <<'EOF'
-          ${{ github.event.head_commit.message }}
-          EOF
-
+          COMMIT_MESSAGE=$(printf "%s" "${{ github.event.head_commit.message }}")
+          eas update --branch ${{ steps.branch-name.outputs.current_branch }} --message "$COMMIT_MESSAGE"
