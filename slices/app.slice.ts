@@ -7,12 +7,16 @@ export interface AppState {
   checked: boolean;
   loggedIn: boolean;
   user?: User;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 const initialState: AppState = {
   checked: false,
   loggedIn: false,
   user: undefined,
+  accessToken: undefined,
+  refreshToken: undefined,
 };
 
 const slice = createSlice({
@@ -22,6 +26,13 @@ const slice = createSlice({
     setLoggedIn: (state: AppState, { payload }: PayloadAction<boolean>) => {
       state.checked = true;
       state.loggedIn = payload;
+    },
+    setTokens: (
+      state: AppState,
+      { payload }: PayloadAction<{ accessToken: string; refreshToken: string }>,
+    ) => {
+      state.accessToken = payload.accessToken;
+      state.refreshToken = payload.refreshToken;
     },
     setUser: (state: AppState, { payload }: PayloadAction<User | undefined>) => {
       state.user = payload;
