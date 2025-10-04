@@ -5,12 +5,12 @@ export interface SignInResponse {
   refreshToken: string;
 }
 
-export async function signIn(email: string, password: string) {
+export async function signInRequest(email: string, password: string): Promise<SignInResponse> {
   const res = await apiClient.instance.post('/auth/sign-in', { email, password });
   return res.data.data as SignInResponse;
 }
 
-export async function refreshToken(refreshToken: string) {
+export async function refreshTokenRequest(refreshToken: string) {
   const res = await apiClient.instance.post('/auth/refresh', { refreshToken });
   return res.data.data as SignInResponse;
 }
