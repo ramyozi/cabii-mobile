@@ -6,67 +6,36 @@ import useColorScheme from '@/hooks/useColorScheme';
 import { colors, loadFonts, loadImages } from '@/theme';
 import { Redirect, Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useAppSlice } from '@/slices';
-import { getUserAsync } from '@/services';
 import Provider from '@/providers';
-import { User } from '@/types';
-import { Storage, StorageKeys } from '@/utils/storage';
+import { useAuth } from '@/plugin/auth-provider/use-auth';
 import '../i18n.config';
 
-// keep the splash screen visible while complete fetching resources
 SplashScreen.preventAutoHideAsync();
 
 function Router() {
   const { isDark } = useColorScheme();
-  const { dispatch, setUser, setLoggedIn, setTokens, loggedIn, checked } = useAppSlice();
+  const { tokens, user, loading } = useAuth();
   const [isOpen, setOpen] = useState(false);
 
-  /**
-   * preload assets and user info
-   */
   useEffect(() => {
     (async () => {
       try {
-        // preload assets
         await Promise.all([loadImages(), loadFonts()]);
-
-        // restore tokens from storage
-        const accessToken = await Storage.getItem(StorageKeys.accessToken);
-        const refreshToken = await Storage.getItem(StorageKeys.refreshToken);
-
-        if (accessToken && refreshToken) {
-          dispatch(setTokens({ accessToken, refreshToken }));
-          dispatch(setLoggedIn(true));
-
-          // fetch user profile (optional but recommended)
-          try {
-            const user = await getUserAsync();
-            if (user) dispatch(setUser(user));
-          } catch (e) {
-            console.warn('Failed to fetch user profile', e);
-          }
-        } else {
-          dispatch(setLoggedIn(false));
-        }
       } catch (e) {
         console.error('App init error', e);
-        dispatch(setLoggedIn(false));
       } finally {
-        // hide splash screen no matter what
-        SplashScreen.hideAsync();
+        await SplashScreen.hideAsync();
         setOpen(true);
       }
     })();
   }, []);
 
-  if (!checked) return null;
+  if (loading) return null;
 
-  if (!loggedIn) {
-    // clean layout for auth
+  if (!tokens || !user) {
     return <Slot />;
   }
 
-  // full layout for main app
   return (
     <Fragment>
       <Slot />

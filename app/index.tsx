@@ -1,12 +1,12 @@
 import { Redirect } from 'expo-router';
-import { useAppSlice } from '@/slices';
+import { useAuth } from '@/plugin/auth-provider/use-auth';
 
 export default function Index() {
-  const { loggedIn, checked } = useAppSlice();
+  const { tokens, user, loading } = useAuth();
 
-  if (!checked) return null;
+  if (loading) return null;
 
-  if (loggedIn) {
+  if (tokens && user) {
     return <Redirect href="/(main)/(tabs)/home" />;
   }
 
