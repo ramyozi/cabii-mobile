@@ -10,6 +10,7 @@ import i18n from '../i18n.config';
 export default function Provider({ children }: Readonly<{ children: React.ReactNode }>) {
   const { isDark } = useColorScheme();
   return (
+      <SwrProvider>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ReduxProvider store={store}>
         <I18nextProvider i18n={i18n}>
@@ -17,5 +18,6 @@ export default function Provider({ children }: Readonly<{ children: React.ReactN
         </I18nextProvider>
       </ReduxProvider>
     </GestureHandlerRootView>
+      </SwrProvider>
   );
 }
