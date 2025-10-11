@@ -41,6 +41,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await Storage.setItem(StorageKeys.accessToken, tokens.accessToken);
     await Storage.setItem(StorageKeys.refreshToken, tokens.refreshToken);
 
+    apiClient.instance.defaults.headers.common['Authorization'] = `Bearer ${tokens.accessToken}`;
+
     dispatch({ type: 'SIGN_IN', payload: { user, tokens } });
   };
 
@@ -79,6 +81,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await AsyncStorage.setItem('authTokens', JSON.stringify(newTokens));
     await Storage.setItem(StorageKeys.accessToken, newTokens.accessToken);
     await Storage.setItem(StorageKeys.refreshToken, newTokens.refreshToken);
+
+    apiClient.instance.defaults.headers.common['Authorization'] = `Bearer ${newTokens.accessToken}`;
 
     dispatch({
       type: 'SWITCH_ROLE',

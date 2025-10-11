@@ -1,7 +1,13 @@
 export enum ActiveRoleEnum {
+  Admin = 'ADMIN',
+  Driver = 'DRIVER',
+  Customer = 'CUSTOMER',
+  Onboarding = 'ONBOARDING',
+}
+
+export enum RoleEnum {
   ADMIN = 'ADMIN',
-  DRIVER = 'DRIVER',
-  CUSTOMER = 'CUSTOMER',
+  USER = 'USER',
 }
 
 export interface AuthTokens {

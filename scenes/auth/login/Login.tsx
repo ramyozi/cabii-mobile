@@ -99,7 +99,7 @@ export default function Login() {
         />
 
         <Text
-          onPress={() => router.push('/(auth)/register')}
+          onPress={() => router.push('/(auth)/sign-up')}
           style={[styles.link, isDark && { color: colors.lightPurple }]}>
           {t('auth.no_account', "Don't have an account? Sign up")}
         </Text>
