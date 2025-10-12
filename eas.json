@@ -4,41 +4,40 @@
   },
   "build": {
     "base": {
-      "node": "20.9.0",
-      "ios": {
-        "image": "auto",
-        "resourceClass": "m-medium"
-      },
+      "node": "20.19.4",
+      "yarn": "1.22.22",
       "android": {
-        "image": "auto"
+        "image": "latest"
+      },
+      "ios": {
+        "image": "latest"
       },
       "channel": "base"
     },
     "development": {
-      "environment": "development",
       "extends": "base",
       "channel": "development",
       "distribution": "internal",
-      "ios": {
-        "simulator": true,
-        "buildConfiguration": "Debug"
-      },
+      "developmentClient": true,
       "android": {
-        "buildType": "app-bundle",
-        "gradleCommand": ":app:assembleDebug"
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "ENV": "development"
       }
     },
     "production": {
       "extends": "base",
       "channel": "production",
-      "environment": "production",
-      "ios": {
-        "simulator": true,
-        "buildConfiguration": "Release"
-      },
+      "developmentClient": false,
       "android": {
-        "buildType": "app-bundle",
-        "gradleCommand": ":app:bundleRelease"
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "ENV": "production"
       }
     }
   },
