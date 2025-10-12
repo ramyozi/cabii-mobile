@@ -5,7 +5,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   // console.log('[##] expo config', expoConfig);
   return {
     ...config,
-    slug: process.env.EXPO_SLUG ?? 'cabii-app',
+    slug: process.env.EXPO_SLUG ?? 'cabii',
     name: process.env.EXPO_NAME ?? 'Cabii',
     owner: 'ramzi.benmansour',
     scheme: 'cabii',
