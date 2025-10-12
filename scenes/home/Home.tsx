@@ -50,7 +50,7 @@ export default function Home() {
 
   return (
     <View style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
-      <Text style={[styles.title, isDark && { color: colors.gray }]}>{t('common.welcome')}</Text>
+      <Text style={[styles.title, isDark && { color: colors.gray }]}>{t('home.welcome')}</Text>
       <Button
         title="log out"
         titleStyle={[styles.buttonTitle, isDark && { color: colors.blackGray }]}

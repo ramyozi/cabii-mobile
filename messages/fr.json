@@ -75,5 +75,11 @@
         "max_items": "Maximum {{max}} élément(s) autorisé(s)"
       }
     }
-  }
+  },
+  "home": {
+    "welcome": "Bienvenue",
+    "noRides": "Aucune course en cours",
+    "requestRide": "Demander une course",
+    "viewHistory": "Voir l'historique des courses"
+  },
 }
