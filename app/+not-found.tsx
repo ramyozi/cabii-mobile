@@ -1,6 +1,8 @@
 import { Link, Stack } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/theme';
+import Button from '@/components/elements/Button';
+import { useRouter } from 'expo-router';
 
 const styles = StyleSheet.create({
   root: {
@@ -25,11 +27,18 @@ const styles = StyleSheet.create({
 });
 
 export default function NotFoundScreen() {
+      const router = useRouter();
+
   return (
     <View style={styles.root}>
       <Stack.Screen options={{ title: 'Oops!' }} />
       <Link href="/" style={styles.link}>
-        <Text style={styles.title}>Go to home screen!</Text>
+        <Button
+                title="Go Home"
+                onPress={() =>
+                  router.push({ pathname: '/(main)/(tabs)/home'})
+                }
+              />
       </Link>
     </View>
   );

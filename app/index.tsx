@@ -8,25 +8,19 @@ export default function Index() {
 
   if (loading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#fff',
-        }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <ActivityIndicator size="large" color="#000" />
       </View>
     );
   }
 
-  if (tokens && user && user.activeRole !== ActiveRoleEnum.Onboarding) {
-    return <Redirect href="/home" />;
+  if (!tokens || !user) {
+    return <Redirect href="/auth/login" />;
   }
 
-  if (tokens && user && user.activeRole === ActiveRoleEnum.Onboarding) {
+  if (user.activeRole === ActiveRoleEnum.Onboarding) {
     return <Redirect href="/onboarding" />;
   }
 
-  return <Redirect href="/auth/login" />;
+  return <Redirect href="/(main)/(tabs)/home" />;
 }

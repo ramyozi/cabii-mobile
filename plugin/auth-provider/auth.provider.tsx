@@ -2,7 +2,7 @@ import React, { useReducer, useEffect } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './auth-context';
-import { ActiveRoleEnum, authReducer, initialAuthState } from './auth-state';
+import { ActiveRoleEnum, authReducer, AuthTokens, AuthUser, initialAuthState } from './auth-state';
 import { Storage, StorageKeys } from '@/utils/storage';
 import { apiClient } from '@/plugin/api-client'; // 👈 use your centralized ApiClient
 
@@ -34,8 +34,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       activeRole,
     });
 
-    const tokens = response.data.data;
-    const user = { email, activeRole: activeRole as ActiveRoleEnum };
+    const tokens = response.data.data as AuthTokens;
+    const user: AuthUser = {
+      id: response.data.user?.id ?? '',
+      firstname: response.data.user?.firstname ?? '',
+      lastname: response.data.user?.lastname ?? '',
+      email,
+      phone: response.data.user?.phone ?? '',
+      activeRole: activeRole as ActiveRoleEnum,
+    };
 
     await AsyncStorage.setItem('authTokens', JSON.stringify(tokens));
     await Storage.setItem(StorageKeys.accessToken, tokens.accessToken);
@@ -76,7 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const switchRole = async (activeRole: string) => {
     const response = await apiClient.instance.post('/auth/switch-role', { activeRole });
-    const newTokens = response.data.data;
+    const newTokens = response.data.data as AuthTokens;
 
     await AsyncStorage.setItem('authTokens', JSON.stringify(newTokens));
     await Storage.setItem(StorageKeys.accessToken, newTokens.accessToken);
@@ -90,6 +97,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  const updateUser = (updates: Partial<AuthUser>) => {
+    dispatch({ type: 'UPDATE_USER', payload: updates });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -98,6 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signOut,
         refreshTokens,
         switchRole,
+        updateUser,
       }}>
       {children}
     </AuthContext.Provider>
