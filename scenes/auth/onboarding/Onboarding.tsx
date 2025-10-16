@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { colors } from '@/theme';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
-import { ActiveRoleEnum } from '@/plugin/auth-provider/auth-state';
 import MultiStepForm, { StepConfig } from '@/components/elements/Form/MultiStepForm';
 import { customerProfileService } from '@/services/customer-profile.service';
 import { driverProfileService } from '@/services/driver-profile.service';
@@ -19,6 +18,7 @@ import {
   schemaDriver,
   schemaRole,
 } from '@/scenes/auth/onboarding/onboarding.schemas';
+import { ActiveRoleEnum } from '@cabii/shared';
 
 export default function Onboarding() {
   const { t } = useTranslation();
@@ -73,7 +73,7 @@ export default function Onboarding() {
       }
 
       if (data.selectedRole === ActiveRoleEnum.Driver) {
-        const driver = await driverProfileService.create({
+        const driverResponse = await driverProfileService.create({
           userId: user.id,
           driverLicenseSerial: data.driver.driverLicenseSerial,
         });
@@ -81,15 +81,15 @@ export default function Onboarding() {
 
         for (const doc of data.driver.documents ?? []) {
           await driverDocumentService.upload({
-            driverId: driver.id,
+            driverId: driverResponse.data.id,
             documentType: doc.type,
-            file: doc.fileUrl,
+            filePath: doc.fileUrl,
             expiryDate: doc.expiryDate,
           });
         }
 
         for (const v of data.driver.vehicles ?? []) {
-          await vehicleService.create({ ...v, driverId: driver.id });
+          await vehicleService.create({ ...v, driverId: driverResponse.data.id });
         }
       }
 

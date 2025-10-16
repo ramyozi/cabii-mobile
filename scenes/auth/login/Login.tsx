@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { z } from 'zod';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userService } from '@/services/user.service';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import { colors } from '@/theme';
 import useColorScheme from '@/hooks/useColorScheme';
 import Button from '@/components/elements/Button';
 import { useTranslation } from 'react-i18next';
+import { ActiveRoleEnum } from '@cabii/shared';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -35,7 +35,7 @@ export default function Login() {
 
   const onSubmit = async (values: LoginForm) => {
     try {
-      await signIn(values.email, values.password, 'CUSTOMER');
+      await signIn(values.email, values.password, ActiveRoleEnum.Customer);
       router.replace('/(main)/(tabs)/home');
     } catch (error) {
       console.error('Login failed:', error);

@@ -3,12 +3,12 @@ import { Alert, View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { colors } from '@/theme';
-import { ActiveRoleEnum, RoleEnum } from '@/plugin/auth-provider/auth-state';
 import { userService } from '@/services/user.service';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import MultiStepForm, { StepConfig } from '@/components/elements/Form/MultiStepForm';
 import StepCommonInfo from './steps/StepCommonInfo';
 import { schemaCommon, SignupFormData } from './signup.schemas';
+import { ActiveRoleEnum, RoleEnum } from '@cabii/shared';
 
 export default function Signup() {
   const { t } = useTranslation();
@@ -37,13 +37,13 @@ export default function Signup() {
   const handleSubmit = async (data: SignupFormData) => {
     try {
       setCreating(true);
-      const user = await userService.register({
+      const user = await userService.create({
         firstname: data.firstname,
         lastname: data.lastname,
         email: data.email,
         phone: data.phone,
         password: data.password,
-        role: RoleEnum.USER,
+        role: RoleEnum.User,
       });
 
       await signIn(data.email, data.password, ActiveRoleEnum.Onboarding);

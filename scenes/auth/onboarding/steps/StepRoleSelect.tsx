@@ -3,7 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 import { useFormContext } from 'react-hook-form';
 import { colors } from '@/theme';
 import { useTranslation } from 'react-i18next';
-import { ActiveRoleEnum } from '@/plugin/auth-provider/auth-state';
+import { ActiveRoleEnum } from '@cabii/shared';
 
 export default function StepRoleSelect() {
   const { register, setValue, watch } = useFormContext<any>();

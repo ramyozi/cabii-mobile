@@ -3,8 +3,6 @@ import { View, Text } from 'react-native';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Button from '@/components/elements/Button';
-import { colors } from '@/theme';
-import FormTextInput from '@/components/elements/Form/FormTextInput';
 
 type Form = {
   driver: {

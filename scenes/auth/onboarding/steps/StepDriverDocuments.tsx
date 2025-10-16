@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Button from '@/components/elements/Button';
 import FormTextInput from '@/components/elements/Form/FormTextInput';
-import { DriverDocumentTypeEnum } from '@/types/document';
+import { DriverDocumentTypeEnum } from '@cabii/shared';
 
 export default function StepDriverDocuments() {
   const { t } = useTranslation();

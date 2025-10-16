@@ -1,7 +1,5 @@
 import { z } from 'zod';
 import { createFormValidator } from '@/utils/formValidator';
-import { ActiveRoleEnum } from '@/plugin/auth-provider/auth-state';
-import { DriverDocumentTypeEnum } from '@/types/document';
 
 const v = createFormValidator();
 
