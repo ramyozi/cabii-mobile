@@ -1,12 +1,13 @@
 import React from 'react';
-import { AuthState, AuthUser, initialAuthState } from './auth-state';
+import { AuthState, initialAuthState } from './auth-state';
+import { ActiveRoleEnum, UserResponseDto } from '@cabii/shared';
 
 export interface AuthContextProps extends AuthState {
-  signIn: (email: string, password: string, activeRole: string) => Promise<void>;
+  signIn: (email: string, password: string, activeRole: ActiveRoleEnum) => Promise<void>;
   signOut: () => Promise<void>;
   refreshTokens: () => Promise<void>;
-  switchRole: (activeRole: string) => Promise<void>;
-  updateUser: (updates: Partial<AuthUser>) => void;
+  switchRole: (activeRole: ActiveRoleEnum) => Promise<void>;
+  updateUser: (updates: Partial<UserResponseDto['data']>) => void;
 }
 
 export const AuthContext = React.createContext<AuthContextProps>({
