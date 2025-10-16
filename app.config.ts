@@ -5,7 +5,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   // console.log('[##] expo config', expoConfig);
   return {
     ...config,
-    slug: process.env.EXPO_SLUG ?? 'cabii-app',
+    slug: process.env.EXPO_SLUG ?? 'cabii',
     name: process.env.EXPO_NAME ?? 'Cabii',
     owner: 'ramzi.benmansour',
     scheme: 'cabii',
@@ -34,8 +34,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     extra: {
       ...config.extra,
       eas: { projectId: '4625ddf2-64db-4f62-8aeb-b307a5bb0332' },
-      env: process.env.ENV ?? 'development',
-      apiUrl: process.env.API_URL ?? 'https://localhost:3000',
+      env: process.env.EXPO_PUBLIC_ENV ?? 'development',
+      apiUrl: process.env.EXPO_PUBLIC_ENV ?? 'https://localhost:3000',
     },
     plugins: [
       'expo-router',

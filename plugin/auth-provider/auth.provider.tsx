@@ -1,12 +1,19 @@
 import React, { useReducer, useEffect } from 'react';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './auth-context';
-import { ActiveRoleEnum, authReducer, initialAuthState } from './auth-state';
+import { authReducer, initialAuthState } from './auth-state';
+import {
+  ActiveRoleEnum,
+  AuthTokenDto,
+  AuthTokenResponseDto,
+  SignInRequestDto,
+  RefreshAuthRequestDto,
+  SwitchRoleDto,
+  UserResponseDto,
+  BackendApiRoutes,
+} from '@ramyozi/cabii-shared';
 import { Storage, StorageKeys } from '@/utils/storage';
-import { apiClient } from '@/plugin/api-client'; // 👈 use your centralized ApiClient
-
-axios.defaults.withCredentials = true;
+import { apiClient } from '@/plugin/api-client';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialAuthState);
@@ -14,41 +21,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     (async () => {
       try {
-        const savedTokens = await AsyncStorage.getItem('authTokens');
-        if (savedTokens) {
-          dispatch({ type: 'RESTORE_TOKENS', payload: JSON.parse(savedTokens) });
+        const saved = await AsyncStorage.getItem('authTokens');
+        if (saved) {
+          dispatch({ type: 'RESTORE_TOKENS', payload: JSON.parse(saved) });
         } else {
           dispatch({ type: 'RESTORE_TOKENS', payload: null });
         }
       } catch (err) {
-        console.error('Error restoring tokens:', err);
+        console.error('Erreur de restauration des tokens:', err);
         dispatch({ type: 'RESTORE_TOKENS', payload: null });
       }
     })();
   }, []);
 
-  const signIn = async (email: string, password: string, activeRole: string) => {
-    const response = await apiClient.instance.post('/auth/sign-in', {
-      email,
-      password,
-      activeRole,
-    });
+  const signIn = async (email: string, password: string, activeRole: ActiveRoleEnum) => {
+    const payload: SignInRequestDto = { email, password, activeRole };
+
+    const response = await apiClient.instance.post<AuthTokenResponseDto>(
+      BackendApiRoutes.auth.signIn.path,
+      payload,
+    );
+
+    if (response.status !== 200) throw new Error(response.data?.message ?? 'Connexion échouée');
 
     const tokens = response.data.data;
-    const user = { email, activeRole: activeRole as ActiveRoleEnum };
+    const meResponse = await apiClient.instance.get<UserResponseDto>(BackendApiRoutes.user.me.path);
+    const user = meResponse.data.data;
 
     await AsyncStorage.setItem('authTokens', JSON.stringify(tokens));
     await Storage.setItem(StorageKeys.accessToken, tokens.accessToken);
     await Storage.setItem(StorageKeys.refreshToken, tokens.refreshToken);
+
+    apiClient.instance.defaults.headers.common['Authorization'] = `Bearer ${tokens.accessToken}`;
 
     dispatch({ type: 'SIGN_IN', payload: { user, tokens } });
   };
 
   const signOut = async () => {
     try {
-      await apiClient.instance.post('/auth/sign-out');
+      await apiClient.instance.post(BackendApiRoutes.auth.signOut.path);
     } catch (err) {
-      console.warn('Error signing out:', err);
+      console.warn('Erreur lors de la déconnexion:', err);
     } finally {
       await AsyncStorage.removeItem('authTokens');
       await Storage.removeItem(StorageKeys.accessToken);
@@ -58,32 +71,56 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const refreshTokens = async () => {
-    const savedTokens = await AsyncStorage.getItem('authTokens');
-    if (!savedTokens) return;
+    const saved = await AsyncStorage.getItem('authTokens');
+    if (!saved) return;
 
-    const { refreshToken } = JSON.parse(savedTokens);
-    const response = await apiClient.instance.post('/auth/refresh', { refreshToken });
+    const { refreshToken } = JSON.parse(saved) as AuthTokenDto;
+    const payload: RefreshAuthRequestDto = { refreshToken };
+
+    const response = await apiClient.instance.post<AuthTokenResponseDto>(
+      BackendApiRoutes.auth.refresh.path,
+      payload,
+    );
+
+    if (response.status !== 200)
+      throw new Error(response.data?.message ?? 'Rafraîchissement échoué');
 
     const newTokens = response.data.data;
     await AsyncStorage.setItem('authTokens', JSON.stringify(newTokens));
     await Storage.setItem(StorageKeys.accessToken, newTokens.accessToken);
     await Storage.setItem(StorageKeys.refreshToken, newTokens.refreshToken);
+
+    apiClient.instance.defaults.headers.common['Authorization'] = `Bearer ${newTokens.accessToken}`;
 
     dispatch({ type: 'RESTORE_TOKENS', payload: newTokens });
   };
 
-  const switchRole = async (activeRole: string) => {
-    const response = await apiClient.instance.post('/auth/switch-role', { activeRole });
-    const newTokens = response.data.data;
+  const switchRole = async (activeRole: ActiveRoleEnum) => {
+    const payload: SwitchRoleDto = { activeRole };
 
+    const response = await apiClient.instance.post<AuthTokenResponseDto>(
+      BackendApiRoutes.auth.switchRole.path,
+      payload,
+    );
+
+    if (response.status !== 200)
+      throw new Error(response.data?.message ?? 'Changement de rôle échoué');
+
+    const newTokens = response.data.data;
     await AsyncStorage.setItem('authTokens', JSON.stringify(newTokens));
     await Storage.setItem(StorageKeys.accessToken, newTokens.accessToken);
     await Storage.setItem(StorageKeys.refreshToken, newTokens.refreshToken);
 
+    apiClient.instance.defaults.headers.common['Authorization'] = `Bearer ${newTokens.accessToken}`;
+
     dispatch({
       type: 'SWITCH_ROLE',
-      payload: { activeRole: activeRole as ActiveRoleEnum, tokens: newTokens },
+      payload: { activeRole, tokens: newTokens },
     });
+  };
+
+  const updateUser = (updates: Partial<UserResponseDto['data']>) => {
+    dispatch({ type: 'UPDATE_USER', payload: updates });
   };
 
   return (
@@ -94,6 +131,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signOut,
         refreshTokens,
         switchRole,
+        updateUser,
       }}>
       {children}
     </AuthContext.Provider>

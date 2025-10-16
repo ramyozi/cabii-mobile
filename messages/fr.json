@@ -1,6 +1,85 @@
 {
+  "auth": {
+    "signForm": {
+      "steps": {
+        "common": "Informations personnelles",
+        "role": "Choisissez votre rôle",
+        "license": "Permis de conduire",
+        "docs": "Documents du conducteur",
+        "vehicle": "Véhicule",
+        "welcome": "Bienvenue sur Cabii"
+      },
+      "fields": {
+        "firstname": "Prénom",
+        "lastname": "Nom",
+        "email": "Adresse e-mail",
+        "phone": "Téléphone",
+        "password": "Mot de passe",
+        "role": "Rôle",
+        "driverLicenseSerial": "Numéro de permis de conduire",
+        "doc_type": "Type de document",
+        "doc_file": "Fichier du document",
+        "doc_expiry": "Date d'expiration",
+        "vehicle_brand": "Marque du véhicule",
+        "vehicle_model": "Modèle du véhicule",
+        "vehicle_plate": "Immatriculation",
+        "vehicle_color": "Couleur",
+        "vehicle_chassis": "Numéro de châssis",
+        "vehicle_year": "Année",
+        "vehicle_category": "Catégorie du véhicule"
+      },
+      "actions": {
+        "addDocument": "Ajouter un document",
+        "addVehicle": "Ajouter un véhicule",
+        "remove": "Supprimer",
+        "done": "Terminer",
+        "next": "Suivant",
+        "back": "Retour",
+        "skip": "Passer cette étape",
+        "submit": "Créer mon compte"
+      },
+      "messages": {
+        "hasVehicle": "Souhaitez-vous ajouter un véhicule ?",
+        "success": "Votre compte a été créé avec succès !",
+        "error": "Une erreur est survenue lors de l'inscription.",
+        "userCreated": "Votre compte utilisateur a été créé. Continuez pour compléter votre profil.",
+        "none": "Aucun élément ajouté",
+        "summary": "Résumé du profil conducteur"
+      },
+      "roles": {
+        "customer": "Client",
+        "driver": "Conducteur"
+      }
+    },
+    "login": {
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "action": "Se connecter"
+    }
+  },
   "common": {
-    "appName": "Cabii",
-    "welcome": "Bienvenue"
-  }
+    "form": {
+      "error": {
+        "required": "Ce champ est obligatoire",
+        "invalid_email": "Adresse e-mail invalide",
+        "invalid_number": "Nombre invalide",
+        "invalid_format": "Format invalide",
+        "invalid_uuid": "Identifiant invalide",
+        "min": "Minimum {{min}} caractères",
+        "max": "Maximum {{max}} caractères",
+        "password_min": "Le mot de passe doit contenir au moins {{min}} caractères",
+        "password_max": "Le mot de passe ne peut pas dépasser {{max}} caractères",
+        "must_be_integer": "La valeur doit être un entier",
+        "must_be_positive": "La valeur doit être positive",
+        "min_items": "Au moins {{min}} élément(s) requis",
+        "max_items": "Maximum {{max}} élément(s) autorisé(s)"
+      }
+    }
+  },
+  "home": {
+    "welcome": "Bienvenue",
+    "noRides": "Aucune course en cours",
+    "requestRide": "Demander une course",
+    "viewHistory": "Voir l'historique des courses"
+  },
 }
