@@ -15,7 +15,7 @@ export default function Index() {
   }
 
   if (!tokens || !user) {
-    return <Redirect href="/auth/login" />;
+    return <Redirect href="/(auth)/login" />;
   }
 
   if (user.activeRole === ActiveRoleEnum.Onboarding) {

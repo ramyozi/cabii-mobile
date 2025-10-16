@@ -9,7 +9,7 @@ export default function OnboardingLayout() {
   if (loading) return null;
 
   if (!tokens || !user) {
-    return <Redirect href="/auth/login" />;
+    return <Redirect href="/(auth)/login" />;
   }
 
   if (user.activeRole !== ActiveRoleEnum.Onboarding) {
