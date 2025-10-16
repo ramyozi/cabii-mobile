@@ -4,7 +4,7 @@ import {
   CustomerProfileCreateRequestDto,
   CustomerProfileResponseDto,
   CustomerProfileListResponseDto,
-} from '@cabii/shared';
+} from '@ramyozi/cabii-shared';
 
 export const customerProfileService = {
   async create(payload: CustomerProfileCreateRequestDto): Promise<CustomerProfileResponseDto> {

@@ -1,6 +1,6 @@
 import { Redirect, Stack } from 'expo-router';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
-import { ActiveRoleEnum } from '@cabii/shared';
+import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
 
 export default function AuthLayout() {
   const { tokens, user, loading } = useAuth();

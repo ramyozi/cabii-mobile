@@ -6,6 +6,10 @@ on:
   push:
     branches: [ 'dev', 'staging', 'main', 'release/**' ]
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   update:
     name: Publish Preview Channel on Push / Pull-Request
@@ -34,6 +38,13 @@ jobs:
           cache-dependency-path: yarn.lock
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@ramyozi'
+
+      - name: Configure npm for GitHub Packages
+        run: |
+          echo "@ramyozi:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
 
       # setup expo
       - name: Setup Expo
@@ -42,6 +53,11 @@ jobs:
           expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # install dependencies
       - name: Install dependencies

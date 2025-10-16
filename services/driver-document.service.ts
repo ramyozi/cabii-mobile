@@ -4,7 +4,7 @@ import {
   DriverDocumentCreateRequestDto,
   DriverDocumentResponseDto,
   DriverDocumentListResponseDto,
-} from '@cabii/shared';
+} from '@ramyozi/cabii-shared';
 
 export const driverDocumentService = {
   async upload(payload: DriverDocumentCreateRequestDto): Promise<DriverDocumentResponseDto> {

@@ -5,7 +5,7 @@ import {
   DriverProfileResponseDto,
   DriverProfileListResponseDto,
   SetActiveVehicleRequestDto,
-} from '@cabii/shared';
+} from '@ramyozi/cabii-shared';
 
 export const driverProfileService = {
   async create(payload: DriverProfileCreateRequestDto): Promise<DriverProfileResponseDto> {

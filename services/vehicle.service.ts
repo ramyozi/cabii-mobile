@@ -5,7 +5,7 @@ import {
   VehicleResponseDto,
   VehicleListResponseDto,
   AccessibilityFeatureListResponseDto,
-} from '@cabii/shared';
+} from '@ramyozi/cabii-shared';
 
 export const vehicleService = {
   async create(payload: VehicleCreateRequestDto): Promise<VehicleResponseDto> {

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createFormValidator } from '@/utils/formValidator';
-import { ActiveRoleEnum, DriverDocumentTypeEnum } from '@cabii/shared';
+import { ActiveRoleEnum, DriverDocumentTypeEnum } from '@ramyozi/cabii-shared';
 
 const v = createFormValidator();
 

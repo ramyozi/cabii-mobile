@@ -6,6 +6,10 @@ on:
   push:
     branches: [ 'dev', 'staging', 'main' ]
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   test:
     name: Test on Push / Pull-Request
@@ -21,11 +25,17 @@ jobs:
       # setup node
       - name: Setup Node
         uses: actions/setup-node@v4
-        continue-on-error: true
         with:
-          cache-dependency-path: yarn.lock
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+          cache-dependency-path: yarn.lock
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@ramyozi'
+
+      - name: Configure npm for GitHub Packages
+        run: |
+          echo "@ramyozi:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
 
       # install dependencies
       - name: Install dependencies

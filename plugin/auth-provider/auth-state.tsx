@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { AuthContext } from '@/plugin/auth-provider/auth-context';
-import { AuthTokenDto, UserResponseDto } from '@cabii/shared';
+import { AuthTokenDto, UserResponseDto } from '@ramyozi/cabii-shared';
 
 export const useAuth = () => useContext(AuthContext);
 

@@ -18,7 +18,7 @@ import {
   schemaDriver,
   schemaRole,
 } from '@/scenes/auth/onboarding/onboarding.schemas';
-import { ActiveRoleEnum } from '@cabii/shared';
+import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
 
 export default function Onboarding() {
   const { t } = useTranslation();

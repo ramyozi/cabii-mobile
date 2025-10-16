@@ -5,7 +5,7 @@ import {
   SwitchRoleDto,
   AuthTokenResponseDto,
   BaseResponseDto,
-} from '@cabii/shared';
+} from '@ramyozi/cabii-shared';
 import { apiClient } from '@/plugin/api-client';
 
 export const signInRequest = async (payload: SignInRequestDto): Promise<AuthTokenResponseDto> => {

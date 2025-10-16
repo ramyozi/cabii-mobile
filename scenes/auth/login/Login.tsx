@@ -9,7 +9,7 @@ import { colors } from '@/theme';
 import useColorScheme from '@/hooks/useColorScheme';
 import Button from '@/components/elements/Button';
 import { useTranslation } from 'react-i18next';
-import { ActiveRoleEnum } from '@cabii/shared';
+import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),

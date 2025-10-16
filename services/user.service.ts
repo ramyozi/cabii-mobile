@@ -7,7 +7,7 @@ import {
   AccessibilityFeatureListResponseDto,
   PhoneAvailabilityCheckResponseDto,
   EmailAvailabilityCheckResponseDto,
-} from '@cabii/shared';
+} from '@ramyozi/cabii-shared';
 
 export const userService = {
   async getMe(): Promise<UserResponseDto> {

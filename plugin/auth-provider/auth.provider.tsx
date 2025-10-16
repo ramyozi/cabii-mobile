@@ -11,7 +11,7 @@ import {
   SwitchRoleDto,
   UserResponseDto,
   BackendApiRoutes,
-} from '@cabii/shared';
+} from '@ramyozi/cabii-shared';
 import { Storage, StorageKeys } from '@/utils/storage';
 import { apiClient } from '@/plugin/api-client';
 

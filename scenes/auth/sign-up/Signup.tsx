@@ -8,7 +8,7 @@ import { useAuth } from '@/plugin/auth-provider/use-auth';
 import MultiStepForm, { StepConfig } from '@/components/elements/Form/MultiStepForm';
 import StepCommonInfo from './steps/StepCommonInfo';
 import { schemaCommon, SignupFormData } from './signup.schemas';
-import { ActiveRoleEnum, RoleEnum } from '@cabii/shared';
+import { ActiveRoleEnum, RoleEnum } from '@ramyozi/cabii-shared';
 
 export default function Signup() {
   const { t } = useTranslation();
