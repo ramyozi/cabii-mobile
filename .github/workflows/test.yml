@@ -34,8 +34,8 @@ jobs:
 
       - name: Configure npm for GitHub Packages
         run: |
-          echo "@ramyozi:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+          echo "@ramyozi:registry=https://npm.pkg.github.com" > ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       # install dependencies
       - name: Install dependencies
