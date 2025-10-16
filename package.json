@@ -24,6 +24,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@cabii/shared": "file:../cabii-shared",
     "@expo/metro-runtime": "~6.1.2",
     "@expo/vector-icons": "^15.0.2",
     "@gorhom/bottom-sheet": "^5",

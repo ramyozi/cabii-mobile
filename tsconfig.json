@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
+      "@cabii/shared": ["../cabii-shared/src"],
       "@/*": [
         "./*"
       ]

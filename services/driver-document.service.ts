@@ -1,44 +1,62 @@
 import { apiClient } from '@/plugin/api-client';
-import { DriverDocument } from '@/types/document';
-
-export interface CreateDriverDocumentPayload {
-  driverId: string;
-  documentType: string;
-  expiryDate?: string;
-  file: any; // TODO: rien pour l'instant
-}
+import {
+  BackendApiRoutes,
+  DriverDocumentCreateRequestDto,
+  DriverDocumentResponseDto,
+  DriverDocumentListResponseDto,
+} from '@cabii/shared';
 
 export const driverDocumentService = {
-  async upload(payload: CreateDriverDocumentPayload): Promise<DriverDocument> {
-    const formData = new FormData();
-    formData.append('driverId', payload.driverId);
-    formData.append('documentType', payload.documentType);
-    if (payload.expiryDate) formData.append('expiryDate', payload.expiryDate);
-    formData.append('file', payload.file);
+  async upload(payload: DriverDocumentCreateRequestDto): Promise<DriverDocumentResponseDto> {
+    // Map DTO -> FormData (nécessaire pour upload fichier côté mobile)
+    const form = new FormData();
+    form.append('driverId', payload.driverId);
+    form.append('documentType', payload.documentType);
+    if (payload.expiryDate) form.append('expiryDate', payload.expiryDate);
+    // @ts-expect-error: RN/Expo file type
+    form.append('file', payload.file);
 
-    const res = await apiClient.instance.post('/driver-document', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    return res.data.data as DriverDocument;
+    const response = await apiClient.instance.post<DriverDocumentResponseDto>(
+      BackendApiRoutes.driverDocument.root.path,
+      form,
+      { headers: { 'Content-Type': 'multipart/form-data' } },
+    );
+    if (response.status !== 201 && response.status !== 200)
+      throw new Error(response.data?.message ?? 'Upload failed');
+    return response.data;
   },
 
-  async approve(documentId: string): Promise<DriverDocument> {
-    const res = await apiClient.instance.patch(`/driver-document/approve/${documentId}`);
-    return res.data.data as DriverDocument;
+  async approve(documentId: string): Promise<DriverDocumentResponseDto> {
+    const response = await apiClient.instance.patch<DriverDocumentResponseDto>(
+      BackendApiRoutes.driverDocument.approve.path.replace('{documentId}', documentId),
+    );
+    if (response.status !== 200) throw new Error(response.data?.message ?? 'Approve failed');
+    return response.data;
   },
 
-  async deny(documentId: string): Promise<DriverDocument> {
-    const res = await apiClient.instance.patch(`/driver-document/deny/${documentId}`);
-    return res.data.data as DriverDocument;
+  async deny(documentId: string): Promise<DriverDocumentResponseDto> {
+    const response = await apiClient.instance.patch<DriverDocumentResponseDto>(
+      BackendApiRoutes.driverDocument.deny.path.replace('{documentId}', documentId),
+    );
+    if (response.status !== 200) throw new Error(response.data?.message ?? 'Deny failed');
+    return response.data;
   },
 
-  async getByDriver(driverId: string): Promise<DriverDocument[]> {
-    const res = await apiClient.instance.get(`/driver-document/driver-profile/${driverId}`);
-    return res.data.data as DriverDocument[];
+  async getByDriver(driverId: string): Promise<DriverDocumentListResponseDto> {
+    const response = await apiClient.instance.get<DriverDocumentListResponseDto>(
+      BackendApiRoutes.driverDocument.driverProfile.path.replace('{driverId}', driverId),
+    );
+    if (response.status !== 200)
+      throw new Error(response.data?.message ?? 'Failed to fetch driver documents');
+    return response.data;
   },
 
-  async getById(documentId: string): Promise<DriverDocument> {
-    const res = await apiClient.instance.get(`/driver-document/${documentId}`);
-    return res.data.data as DriverDocument;
+  async getById(documentId: string): Promise<DriverDocumentResponseDto> {
+    const response = await apiClient.instance.get<DriverDocumentResponseDto>(
+      BackendApiRoutes.driverDocument.byDocumentId.path.replace('{documentId}', documentId),
+    );
+    if (response.status !== 200)
+      throw new Error(response.data?.message ?? 'Failed to fetch driver document');
+    return response.data;
   },
 };
