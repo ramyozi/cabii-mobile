@@ -1,7 +1,7 @@
 import { Redirect } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
-import { ActiveRoleEnum } from '@/plugin/auth-provider/auth-state';
+import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
 
 export default function Index() {
   const { tokens, user, loading } = useAuth();
@@ -19,7 +19,18 @@ export default function Index() {
   }
 
   if (user.activeRole === ActiveRoleEnum.Onboarding) {
-    return <Redirect href="/onboarding" />;
+    return <Redirect href="/(onboarding)" />;
+  }
+
+  const validRoles = [
+    ActiveRoleEnum.Admin,
+    ActiveRoleEnum.Driver,
+    ActiveRoleEnum.Customer,
+    ActiveRoleEnum.Onboarding,
+  ];
+
+  if (!user.activeRole || !validRoles.includes(user.activeRole)) {
+    return <Redirect href="/(session)/choose-role" />;
   }
 
   return <Redirect href="/(main)/(tabs)/home" />;

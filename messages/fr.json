@@ -52,9 +52,25 @@
       }
     },
     "login": {
+      "title": "Connexion",
       "email": "Adresse e-mail",
       "password": "Mot de passe",
-      "action": "Se connecter"
+      "signIn": "Se connecter",
+      "signingIn": "Connexion...",
+      "noAccount": "Pas de compte ? Inscrivez-vous",
+      "errors": {
+        "invalidCredentials": "Adresse e-mail ou mot de passe incorrect",
+        "missingDriverProfile": "Ce compte n’a pas de profil conducteur",
+        "missingCustomerProfile": "Ce compte n’a pas de profil client",
+        "missingAnyProfile": "Ce compte n’a pas encore de profil associé",
+        "notAdmin": "Ce compte n’est pas administrateur"
+      }
+    },
+    "chooseRole": {
+      "title": "Choisissez votre rôle",
+      "subtitle": "Sélectionnez comment vous souhaitez continuer.",
+      "driverDesc": "Conduisez et aidez les clients à se déplacer.",
+      "customerDesc": "Réservez vos trajets en quelques clics."
     }
   },
   "common": {
@@ -74,6 +90,12 @@
         "min_items": "Au moins {{min}} élément(s) requis",
         "max_items": "Maximum {{max}} élément(s) autorisé(s)"
       }
+    },
+    "errors": {
+      "forbidden": "Vous n’êtes pas autorisé à effectuer cette action",
+      "network": "Problème de connexion réseau",
+      "timeout": "Le serveur met trop de temps à répondre",
+      "default": "Une erreur est survenue. Veuillez réessayer."
     }
   },
   "home": {
