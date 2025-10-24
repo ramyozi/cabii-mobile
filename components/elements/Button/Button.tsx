@@ -1,8 +1,7 @@
+import React from 'react';
 import {
   ActivityIndicator,
   GestureResponderEvent,
-  ImageSourcePropType,
-  ImageStyle,
   Pressable,
   PressableProps,
   StyleProp,
@@ -11,22 +10,11 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native';
+import { useAppTheme } from '@/plugin/theme-provider';
 import { colors } from '@/theme';
-import Image from '../Image';
-
-const styles = StyleSheet.create({
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export interface ButtonProps extends PressableProps {
   title?: string;
-  image?: ImageSourcePropType;
-  imageStyle?: StyleProp<ImageStyle>;
   titleStyle?: StyleProp<TextStyle>;
   onPress?: (event: GestureResponderEvent) => void;
   onLongPress?: (event: GestureResponderEvent) => void;
@@ -34,30 +22,76 @@ export interface ButtonProps extends PressableProps {
   loaderColor?: string;
   children?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
+  variant?: 'filled' | 'outlined' | 'text';
+  disabled?: boolean;
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderRadius: 12,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+});
 
 function Button({
   title,
   titleStyle,
-  image,
   style,
   disabled,
   isLoading,
-  loaderColor = colors.white,
-  imageStyle,
+  loaderColor,
   children,
+  variant = 'filled',
   ...others
 }: ButtonProps) {
-  const opacityStyle = { opacity: disabled ? 0.6 : 1 };
+  const { theme } = useAppTheme();
+
+  const palette = theme.colors;
+  const isOutlined = variant === 'outlined';
+  const isText = variant === 'text';
+  const baseBg = isOutlined || isText ? 'transparent' : palette.primary;
+  const borderColor = isOutlined ? palette.primary : 'transparent';
+  const textColor = isOutlined || isText ? palette.primary : palette.onPrimary;
+
+  const opacityStyle = { opacity: disabled ? 0.5 : 1 };
+
   return (
     <Pressable
-      style={[styles.root, opacityStyle, style]}
-      disabled={disabled ?? isLoading}
+      style={[
+        styles.root,
+        {
+          backgroundColor: baseBg,
+          borderColor,
+          borderWidth: isOutlined ? 1.5 : 0,
+        },
+        opacityStyle,
+        style,
+      ]}
+      disabled={disabled || isLoading}
+      android_ripple={{
+        color: palette.onSurface,
+        borderless: false,
+      }}
       {...others}>
-      {children}
-      {isLoading && <ActivityIndicator size="small" color={loaderColor} />}
-      {!isLoading && image && <Image source={image} style={imageStyle} />}
-      {!isLoading && title && <Text style={titleStyle}>{title}</Text>}
+      {isLoading ? (
+        <ActivityIndicator size="small" color={loaderColor ?? textColor ?? colors.white} />
+      ) : (
+        <>
+          {children}
+          {title ? (
+            <Text style={[styles.title, { color: textColor }, titleStyle]}>{title}</Text>
+          ) : null}
+        </>
+      )}
     </Pressable>
   );
 }

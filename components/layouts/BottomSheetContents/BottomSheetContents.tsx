@@ -1,9 +1,9 @@
 import GradientButton from '@/components/elements/GradientButton';
 import { StyleSheet, Text, View } from 'react-native';
-import useColorScheme from '@/hooks/useColorScheme';
 import { windowWidth } from '@/utils/deviceInfo';
 import { colors, fonts } from '@/theme';
 import config from '@/utils/config';
+import { useAppTheme } from '@/plugin/theme-provider';
 
 const styles = StyleSheet.create({
   root: {
@@ -68,7 +68,7 @@ type WelcomeBottomSheetContentsProps = {
 };
 
 export default function BottomSheetContents({ onClose }: WelcomeBottomSheetContentsProps) {
-  const { isDark } = useColorScheme();
+  const { isDark } = useAppTheme();
   return (
     <View style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
       <Text style={[styles.title, isDark && { color: colors.gray }]}>🎉 Congratulations! </Text>
@@ -93,7 +93,7 @@ export default function BottomSheetContents({ onClose }: WelcomeBottomSheetConte
         titleStyle={[styles.buttonTitle, isDark && { color: colors.blackGray }]}
         style={styles.button}
         gradientBackgroundProps={{
-          colors: [colors.purple, colors.pink],
+          colors: [colors.darkPurple, colors.pink],
           start: { x: 0, y: 1 },
           end: { x: 0.8, y: 0 },
         }}
