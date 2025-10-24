@@ -90,7 +90,7 @@ utils/               # Utility functions (config, deviceInfo)
 ### File Naming
 
 - **Components**: PascalCase (`Button.tsx`)
-- **Hooks**: camelCase with "use" prefix (`useColorScheme.ts`)
+- **Hooks**: camelCase with "use" prefix (`useDataPersist.ts`)
 - **Utils**: camelCase (`deviceInfo.ts`)
 - **Types**: PascalCase (`User.ts`)
 

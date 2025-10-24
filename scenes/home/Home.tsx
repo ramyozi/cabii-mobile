@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
-import useColorScheme from '@/hooks/useColorScheme';
 import Button from '@/components/elements/Button';
 import { useRouter } from 'expo-router';
 import { colors } from '@/theme';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
+import { useAppTheme } from '@/plugin/theme-provider';
 
 const styles = StyleSheet.create({
   root: {
@@ -37,7 +37,7 @@ export default function Home() {
   const { t } = useTranslation();
   const { signOut } = useAuth();
   const router = useRouter();
-  const { isDark } = useColorScheme();
+  const { isDark } = useAppTheme();
 
   const handleSignOut = async () => {
     try {
