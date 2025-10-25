@@ -4,12 +4,13 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
-import { Card, Text, useTheme, Surface, ActivityIndicator } from 'react-native-paper';
+import { Card, Text, Surface, ActivityIndicator } from 'react-native-paper';
 import { Car, User } from 'lucide-react-native';
+import { useAppTheme } from '@/plugin/theme-provider';
 
 export default function ChooseRoleScreen() {
   const { t } = useTranslation();
-  const theme = useTheme();
+  const { theme } = useAppTheme();
   const router = useRouter();
   const { switchRole } = useAuth();
   const [loading, setLoading] = useState<ActiveRoleEnum | null>(null);
@@ -18,7 +19,8 @@ export default function ChooseRoleScreen() {
     try {
       setLoading(role);
       await switchRole(role);
-      router.replace('/(main)/(tabs)/home');
+      await new Promise(res => setTimeout(res, 300));
+      router.replace('/(main)/(tabs)');
     } finally {
       setLoading(null);
     }
