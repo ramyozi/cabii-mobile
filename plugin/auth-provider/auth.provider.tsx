@@ -128,7 +128,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const refreshTokens = async () => {
-    console.log('Refreshing tokens...');
     const saved = await AsyncStorage.getItem('authTokens');
     if (!saved) return;
 
