@@ -39,12 +39,12 @@ export default function Index() {
   // Route based on active role (case-insensitive)
   if (user.activeRole === ActiveRoleEnum.Customer || normalizedActiveRole === 'CUSTOMER') {
     console.log('[ROUTING DEBUG] Redirecting to customer home');
-    return <Redirect href="/(customer)/home" />;
+    return <Redirect href="/(customer-app)/(tabs)/home" />;
   }
 
   if (user.activeRole === ActiveRoleEnum.Driver || normalizedActiveRole === 'DRIVER') {
     console.log('[ROUTING DEBUG] Redirecting to driver dashboard');
-    return <Redirect href="/(driver)/dashboard" />;
+    return <Redirect href="/(driver-app)/(tabs)/dashboard" />;
   }
 
   if (user.activeRole === ActiveRoleEnum.Admin || normalizedActiveRole === 'ADMIN') {

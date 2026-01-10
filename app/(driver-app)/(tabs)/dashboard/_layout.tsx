@@ -1,10 +1,14 @@
-import { Stack } from 'expo-router';
+import { Stack, useNavigation } from 'expo-router';
+import { DrawerActions } from '@react-navigation/native';
 import { useAppTheme } from '@/plugin/theme-provider';
 import { colors } from '@/theme';
 import NavigationHeaderTitle from '@/components/layouts/NavigationHeaderTitle';
+import NavigationHeaderLeft from '@/components/layouts/NavigationHeaderLeft';
 
-export default function CustomerHomeStackLayout() {
+export default function DriverDashboardStackLayout() {
   const { isDark } = useAppTheme();
+  const navigation = useNavigation();
+  const toggleDrawer = () => navigation.dispatch(DrawerActions.toggleDrawer());
 
   return (
     <Stack
@@ -16,22 +20,23 @@ export default function CustomerHomeStackLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Dashboard',
           headerTitle: () => <NavigationHeaderTitle />,
+          headerLeft: () => <NavigationHeaderLeft onPress={toggleDrawer} />,
           headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
-        name="book-ride"
+        name="available-rides"
         options={{
-          title: 'Book a Ride',
+          title: 'Available Rides',
           headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
-        name="book-delivery"
+        name="ride-details"
         options={{
-          title: 'Book a Delivery',
+          title: 'Ride Details',
           headerTitleAlign: 'center',
         }}
       />
