@@ -146,21 +146,14 @@ export default function DrawerContents() {
     <SafeAreaView style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
       <ScrollView>
         {/* User Header */}
-        <View
-          style={[styles.header, isDark && { borderBottomColor: colors.darkGray }]}>
+        <View style={[styles.header, isDark && { borderBottomColor: colors.darkGray }]}>
           <View style={styles.userInfo}>
             <Text style={[styles.userName, isDark && { color: colors.white }]}>
-              {user?.firstName} {user?.lastName}
+              {user?.firstname} {user?.lastname}
             </Text>
-            <Text style={[styles.userEmail, isDark && { color: colors.gray }]}>
-              {user?.email}
-            </Text>
+            <Text style={[styles.userEmail, isDark && { color: colors.gray }]}>{user?.email}</Text>
           </View>
-          <View
-            style={[
-              styles.currentRole,
-              isDark && { backgroundColor: colors.darkPurple },
-            ]}>
+          <View style={[styles.currentRole, isDark && { backgroundColor: colors.darkPurple }]}>
             <Text style={styles.currentRoleText}>
               {t('drawer.currentRole')}: {getRoleLabel(user?.activeRole as string)}
             </Text>
@@ -170,9 +163,7 @@ export default function DrawerContents() {
         {/* Menu Items */}
         <View style={styles.menuSection}>
           {/* Switch Role */}
-          <Pressable
-            style={styles.menuItem}
-            onPress={handleSwitchRole}>
+          <Pressable style={styles.menuItem} onPress={handleSwitchRole}>
             <Ionicons
               name="swap-horizontal"
               size={24}
@@ -202,11 +193,7 @@ export default function DrawerContents() {
                 router.push('/(driver-app)/(tabs)/profile');
               }
             }}>
-            <Ionicons
-              name="person"
-              size={24}
-              color={isDark ? colors.white : colors.darkPurple}
-            />
+            <Ionicons name="person" size={24} color={isDark ? colors.white : colors.darkPurple} />
             <Text style={[styles.menuItemText, isDark && { color: colors.white }]}>
               {t('drawer.profile')}
             </Text>
@@ -214,11 +201,7 @@ export default function DrawerContents() {
 
           {/* Settings */}
           <Pressable style={styles.menuItem}>
-            <Ionicons
-              name="settings"
-              size={24}
-              color={isDark ? colors.white : colors.darkPurple}
-            />
+            <Ionicons name="settings" size={24} color={isDark ? colors.white : colors.darkPurple} />
             <Text style={[styles.menuItemText, isDark && { color: colors.white }]}>
               {t('drawer.settings')}
             </Text>
@@ -304,17 +287,9 @@ export default function DrawerContents() {
           <View style={[styles.divider, isDark && { backgroundColor: colors.darkGray }]} />
 
           {/* Logout */}
-          <Pressable
-            style={styles.menuItem}
-            onPress={handleLogout}>
-            <Ionicons
-              name="log-out"
-              size={24}
-              color={colors.red}
-            />
-            <Text style={[styles.menuItemText, { color: colors.red }]}>
-              {t('drawer.logout')}
-            </Text>
+          <Pressable style={styles.menuItem} onPress={handleLogout}>
+            <Ionicons name="log-out" size={24} color={colors.red} />
+            <Text style={[styles.menuItemText, { color: colors.red }]}>{t('drawer.logout')}</Text>
           </Pressable>
         </View>
       </ScrollView>

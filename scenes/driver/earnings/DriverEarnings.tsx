@@ -83,19 +83,19 @@ export default function DriverEarnings() {
             title={t('driver.earnings.dailyEarnings')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/earnings/daily')}
+            onPress={() => router.push('/(driver-app)/earnings/daily')}
           />
           <Button
             title={t('driver.earnings.weeklyEarnings')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/earnings/weekly')}
+            onPress={() => router.push('/(driver-app)/earnings/weekly')}
           />
           <Button
             title={t('driver.earnings.earningsHistory')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/earnings/history')}
+            onPress={() => router.push('/(driver-app)/earnings/history')}
           />
         </View>
       </View>

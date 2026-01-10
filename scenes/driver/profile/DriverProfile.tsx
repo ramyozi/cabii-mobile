@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   logoutButton: {
-    backgroundColor: colors.red,
+    backgroundColor: colors.darkPurple,
   },
 });
 
@@ -63,7 +63,7 @@ export default function DriverProfile() {
     <ScrollView style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
       <View style={styles.content}>
         <Text style={[styles.title, isDark && { color: colors.white }]}>
-          {user?.firstName} {user?.lastName}
+          {user?.firstname} {user?.lastname}
         </Text>
 
         <View style={styles.section}>
@@ -74,7 +74,7 @@ export default function DriverProfile() {
             title={t('driver.profile.editProfile')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/profile/edit-profile')}
+            onPress={() => router.push('/(driver-app)/profile/edit-profile')}
           />
         </View>
 
@@ -86,13 +86,13 @@ export default function DriverProfile() {
             title={t('driver.profile.myDocuments')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/profile/documents')}
+            onPress={() => router.push('/(driver-app)/profile/documents')}
           />
           <Button
             title={t('driver.profile.myVehicle')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/profile/vehicle')}
+            onPress={() => router.push('/(driver-app)/profile/vehicle')}
           />
         </View>
 
@@ -104,7 +104,7 @@ export default function DriverProfile() {
             title={t('driver.profile.settings')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/profile/settings')}
+            onPress={() => router.push('/(driver-app)/profile/settings')}
           />
         </View>
 

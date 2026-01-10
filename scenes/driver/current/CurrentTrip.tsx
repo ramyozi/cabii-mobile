@@ -70,13 +70,13 @@ export default function CurrentTrip() {
             title={t('driver.current.openNavigation')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/current/navigation')}
+            onPress={() => router.push('/(driver-app)/current/navigation')}
           />
           <Button
             title={t('driver.current.viewTripSummary')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
-            onPress={() => router.push('/(driver)/current/trip-summary')}
+            onPress={() => router.push('/(driver-app)/current/trip-summary')}
           />
         </View>
       </View>
