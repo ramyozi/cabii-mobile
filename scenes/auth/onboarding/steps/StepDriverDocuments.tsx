@@ -22,30 +22,29 @@ export default function StepDriverDocuments() {
         {t('auth.signForm.fields.documents')}
       </Text>
 
-      {/* wip
-          {fields.map((field, index) => (
-            <View key={field.id} style={{ marginBottom: 12 }}>
-              <FormTextInput
-                name={`driver.documents.${index}.fileUrl`}
-                label={t('auth.signForm.fields.fileUrl')}
-              />
-              <FormTextInput
-                name={`driver.documents.${index}.expiryDate`}
-                label={t('auth.signForm.fields.expiryDate')}
-              />
-              <FormTextInput
-                name={`driver.documents.${index}.type`}
-                label={t('auth.signForm.fields.type')}
-                placeholder={Object.values(DriverDocumentTypeEnum).join(', ')}
-              />
-              <Button
-                title={t('auth.signForm.actions.remove')}
-                onPress={() => remove(index)}
-                style={{ marginTop: 8, backgroundColor: '#ff5555' }}
-              />
-            </View>
-          ))}
-        */}
+      {fields.map((field, index) => (
+        <View key={field.id} style={{ marginBottom: 12 }}>
+          <FormTextInput
+            name={`driver.documents.${index}.fileUrl`}
+            label={t('auth.signForm.fields.fileUrl')}
+          />
+          <FormTextInput
+            name={`driver.documents.${index}.expiryDate`}
+            label={t('auth.signForm.fields.expiryDate')}
+          />
+          <FormTextInput
+            name={`driver.documents.${index}.type`}
+            label={t('auth.signForm.fields.type')}
+            placeholder={Object.values(DriverDocumentTypeEnum).join(', ')}
+          />
+          <Button
+            title={t('auth.signForm.actions.remove')}
+            onPress={() => remove(index)}
+            style={{ marginTop: 8, backgroundColor: '#ff5555' }}
+          />
+        </View>
+      ))}
+
       <Button
         title={t('auth.signForm.actions.addDocument')}
         onPress={() =>
