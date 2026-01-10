@@ -4,9 +4,10 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
-import { Card, Text, Surface, ActivityIndicator } from 'react-native-paper';
+import { Card, Text, Surface, ActivityIndicator, Snackbar } from 'react-native-paper';
 import { Car, User } from 'lucide-react-native';
 import { useAppTheme } from '@/plugin/theme-provider';
+import { mapServerError } from '@/utils/serverErrorMapper';
 
 export default function ChooseRoleScreen() {
   const { t } = useTranslation();
@@ -14,14 +15,20 @@ export default function ChooseRoleScreen() {
   const router = useRouter();
   const { switchRole } = useAuth();
   const [loading, setLoading] = useState<ActiveRoleEnum | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSelect = async (role: ActiveRoleEnum) => {
     try {
       setLoading(role);
+      setError(null);
       await switchRole(role);
       await new Promise(res => setTimeout(res, 300));
       // Redirect to root - index.tsx will handle role-based routing
       router.replace('/');
+    } catch (err: any) {
+      console.error('Role switch error:', err);
+      const errorMessage = mapServerError(err, t);
+      setError(errorMessage);
     } finally {
       setLoading(null);
     }
@@ -80,6 +87,18 @@ export default function ChooseRoleScreen() {
           </Card>
         </View>
       </Surface>
+
+      <Snackbar
+        visible={!!error}
+        onDismiss={() => setError(null)}
+        duration={5000}
+        action={{
+          label: t('common.dismiss'),
+          onPress: () => setError(null),
+        }}
+        style={{ backgroundColor: theme.colors.error }}>
+        {error}
+      </Snackbar>
     </ScrollView>
   );
 }
