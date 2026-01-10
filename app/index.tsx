@@ -48,8 +48,9 @@ export default function Index() {
   }
 
   if (user.activeRole === ActiveRoleEnum.Admin || normalizedActiveRole === 'ADMIN') {
-    console.log('[ROUTING DEBUG] Redirecting to admin home');
-    return <Redirect href="/(main)/(tabs)/home" />;
+    console.log('[ROUTING DEBUG] Admin role detected - redirecting to customer app temporarily');
+    // TODO: Create dedicated admin interface
+    return <Redirect href="/(customer-app)/(tabs)/home" />;
   }
 
   console.log('[ROUTING DEBUG] No valid role, redirecting to choose-role');

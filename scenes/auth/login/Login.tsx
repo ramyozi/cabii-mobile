@@ -64,7 +64,8 @@ export default function Login() {
       if ((result as any)?.pendingRoleSelection) {
         router.replace('/(session)/choose-role');
       } else {
-        router.replace('/(main)/(tabs)/home');
+        // Redirect to root - index.tsx will handle role-based routing
+        router.replace('/');
       }
     } catch (error: any) {
       setServerError(mapServerError(error, t));

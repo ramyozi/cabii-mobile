@@ -74,6 +74,7 @@
     }
   },
   "common": {
+    "unknown": "Inconnu",
     "form": {
       "error": {
         "required": "Ce champ est obligatoire",
@@ -104,4 +105,115 @@
     "requestRide": "Demander une course",
     "viewHistory": "Voir l'historique des courses"
   },
+  "customer": {
+    "home": {
+      "title": "Accueil",
+      "bookRide": "Réserver une course",
+      "bookDelivery": "Réserver une livraison",
+      "whereToGo": "Où allez-vous ?",
+      "pickupLocation": "Lieu de prise en charge",
+      "dropoffLocation": "Destination",
+      "estimatedPrice": "Prix estimé",
+      "estimatedTime": "Temps estimé"
+    },
+    "trips": {
+      "title": "Mes courses",
+      "active": "En cours",
+      "history": "Historique",
+      "noTrips": "Aucune course",
+      "tripDetails": "Détails de la course",
+      "liveTracking": "Suivi en direct",
+      "driver": "Conducteur",
+      "vehicle": "Véhicule",
+      "pickupTime": "Heure de prise en charge",
+      "dropoffTime": "Heure d'arrivée",
+      "status": "Statut"
+    },
+    "wallet": {
+      "title": "Portefeuille",
+      "balance": "Solde",
+      "paymentMethods": "Moyens de paiement",
+      "transactionHistory": "Historique des transactions",
+      "addPaymentMethod": "Ajouter un moyen de paiement",
+      "creditCard": "Carte de crédit",
+      "debitCard": "Carte de débit",
+      "noPaymentMethods": "Aucun moyen de paiement",
+      "noTransactions": "Aucune transaction"
+    },
+    "profile": {
+      "title": "Profil",
+      "editProfile": "Modifier le profil",
+      "settings": "Paramètres",
+      "support": "Support",
+      "personalInfo": "Informations personnelles",
+      "preferences": "Préférences",
+      "notifications": "Notifications",
+      "privacy": "Confidentialité",
+      "helpCenter": "Centre d'aide",
+      "contactSupport": "Contacter le support",
+      "faq": "FAQ"
+    }
+  },
+  "driver": {
+    "dashboard": {
+      "title": "Tableau de bord",
+      "status": "Statut",
+      "online": "En ligne",
+      "offline": "Hors ligne",
+      "availableRides": "Courses disponibles",
+      "todaySummary": "Résumé du jour",
+      "trips": "Courses",
+      "earnings": "Gains",
+      "noRides": "Aucune course disponible",
+      "rideDetails": "Détails de la course",
+      "acceptRide": "Accepter la course",
+      "declineRide": "Refuser la course"
+    },
+    "current": {
+      "title": "Course en cours",
+      "noCurrentTrip": "Aucune course en cours",
+      "navigation": "Navigation",
+      "tripSummary": "Résumé de la course",
+      "passenger": "Passager",
+      "pickup": "Prise en charge",
+      "dropoff": "Destination",
+      "arrived": "Arrivé",
+      "startTrip": "Démarrer la course",
+      "completeTrip": "Terminer la course",
+      "cancelTrip": "Annuler la course"
+    },
+    "earnings": {
+      "title": "Revenus",
+      "daily": "Journalier",
+      "weekly": "Hebdomadaire",
+      "history": "Historique",
+      "totalEarnings": "Gains totaux",
+      "tripsCompleted": "Courses terminées",
+      "averageRating": "Note moyenne",
+      "todayEarnings": "Gains du jour",
+      "weekEarnings": "Gains de la semaine",
+      "monthEarnings": "Gains du mois",
+      "noEarnings": "Aucun revenu"
+    },
+    "profile": {
+      "title": "Profil",
+      "editProfile": "Modifier le profil",
+      "documents": "Documents",
+      "vehicle": "Véhicule",
+      "settings": "Paramètres",
+      "driverLicense": "Permis de conduire",
+      "insurance": "Assurance",
+      "registration": "Carte grise",
+      "vehicleInfo": "Informations du véhicule",
+      "availability": "Disponibilité",
+      "workingHours": "Heures de travail"
+    }
+  },
+  "drawer": {
+    "switchRole": "Changer de rôle",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "currentRole": "Rôle actuel"
+  }
 }

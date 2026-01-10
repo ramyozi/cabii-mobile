@@ -1,9 +1,11 @@
 import { Tabs } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/plugin/theme-provider';
 import { colors } from '@/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function DriverTabsLayout() {
+  const { t } = useTranslation();
   const { isDark } = useAppTheme();
 
   return (
@@ -20,14 +22,14 @@ export default function DriverTabsLayout() {
       <Tabs.Screen
         name="dashboard"
         options={{
-          title: 'Dashboard',
+          title: t('driver.dashboard.title'),
           tabBarIcon: ({ color, size }) => <Ionicons name="grid" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="current"
         options={{
-          title: 'Current',
+          title: t('driver.current.title'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="navigate" size={size} color={color} />
           ),
@@ -36,14 +38,14 @@ export default function DriverTabsLayout() {
       <Tabs.Screen
         name="earnings"
         options={{
-          title: 'Earnings',
+          title: t('driver.earnings.title'),
           tabBarIcon: ({ color, size }) => <Ionicons name="cash" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: t('driver.profile.title'),
           tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
         }}
       />

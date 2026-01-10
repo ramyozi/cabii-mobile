@@ -1,9 +1,11 @@
 import { Tabs } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '@/plugin/theme-provider';
 import { colors } from '@/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function CustomerTabsLayout() {
+  const { t } = useTranslation();
   const { isDark } = useAppTheme();
 
   return (
@@ -20,28 +22,28 @@ export default function CustomerTabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
+          title: t('customer.home.title'),
           tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="trips"
         options={{
-          title: 'Trips',
+          title: t('customer.trips.title'),
           tabBarIcon: ({ color, size }) => <Ionicons name="car" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="wallet"
         options={{
-          title: 'Wallet',
+          title: t('customer.wallet.title'),
           tabBarIcon: ({ color, size }) => <Ionicons name="wallet" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: t('customer.profile.title'),
           tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
         }}
       />

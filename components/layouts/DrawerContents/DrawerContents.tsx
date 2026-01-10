@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
 });
 
 export default function DrawerContents() {
+  const { t } = useTranslation();
   const { isDark } = useAppTheme();
   const { user, signOut } = useAuth();
   const router = useRouter();
@@ -73,10 +75,10 @@ export default function DrawerContents() {
   };
 
   const getRoleLabel = (role: string | undefined) => {
-    if (!role) return 'Unknown';
+    if (!role) return t('common.unknown');
     const normalized = role.toUpperCase();
-    if (normalized === 'CUSTOMER') return 'Customer';
-    if (normalized === 'DRIVER') return 'Driver';
+    if (normalized === 'CUSTOMER') return t('auth.signForm.roles.customer');
+    if (normalized === 'DRIVER') return t('auth.signForm.roles.driver');
     if (normalized === 'ADMIN') return 'Admin';
     return role;
   };
@@ -101,7 +103,7 @@ export default function DrawerContents() {
               isDark && { backgroundColor: colors.darkPurple },
             ]}>
             <Text style={styles.currentRoleText}>
-              Current Role: {getRoleLabel(user?.activeRole as string)}
+              {t('drawer.currentRole')}: {getRoleLabel(user?.activeRole as string)}
             </Text>
           </View>
         </View>
@@ -118,7 +120,7 @@ export default function DrawerContents() {
               color={isDark ? colors.white : colors.darkPurple}
             />
             <Text style={[styles.menuItemText, isDark && { color: colors.white }]}>
-              Switch Role
+              {t('drawer.switchRole')}
             </Text>
           </Pressable>
 
@@ -147,7 +149,7 @@ export default function DrawerContents() {
               color={isDark ? colors.white : colors.darkPurple}
             />
             <Text style={[styles.menuItemText, isDark && { color: colors.white }]}>
-              Profile
+              {t('drawer.profile')}
             </Text>
           </Pressable>
 
@@ -159,7 +161,7 @@ export default function DrawerContents() {
               color={isDark ? colors.white : colors.darkPurple}
             />
             <Text style={[styles.menuItemText, isDark && { color: colors.white }]}>
-              Settings
+              {t('drawer.settings')}
             </Text>
           </Pressable>
 
@@ -175,7 +177,7 @@ export default function DrawerContents() {
               color={colors.red}
             />
             <Text style={[styles.menuItemText, { color: colors.red }]}>
-              Logout
+              {t('drawer.logout')}
             </Text>
           </Pressable>
         </View>
