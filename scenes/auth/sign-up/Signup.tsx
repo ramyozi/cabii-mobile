@@ -9,6 +9,7 @@ import MultiStepForm, { StepConfig } from '@/components/elements/Form/MultiStepF
 import StepCommonInfo from './steps/StepCommonInfo';
 import { schemaCommon, SignupFormData } from './signup.schemas';
 import { ActiveRoleEnum, RoleEnum } from '@ramyozi/cabii-shared';
+import { mapServerError } from '@/utils/serverErrorMapper';
 
 export default function Signup() {
   const { t } = useTranslation();
@@ -37,7 +38,9 @@ export default function Signup() {
   const handleSubmit = async (data: SignupFormData) => {
     try {
       setCreating(true);
-      const user = await userService.create({
+
+      // Create user account
+      await userService.create({
         firstname: data.firstname,
         lastname: data.lastname,
         email: data.email,
@@ -46,12 +49,21 @@ export default function Signup() {
         role: RoleEnum.User,
       });
 
-      await signIn(data.email, data.password);
-      Alert.alert(t('auth.signForm.messages.userCreated'));
-      router.replace('/(onboarding)');
-    } catch (err) {
-      console.error(err);
-      Alert.alert(t('auth.signForm.messages.error'));
+      // Sign in and handle result
+      const result = await signIn(data.email, data.password);
+
+      // Handle different signin results
+      if ((result as any)?.pendingRoleSelection) {
+        // Multiple profiles exist - go to role selection
+        router.replace('/(session)/choose-role');
+      } else {
+        // New user or single profile - redirect to root (will handle routing)
+        router.replace('/');
+      }
+    } catch (err: any) {
+      console.error('Signup error:', err);
+      const errorMessage = mapServerError(err, t);
+      Alert.alert(t('auth.signForm.messages.error'), errorMessage);
     } finally {
       setCreating(false);
     }
