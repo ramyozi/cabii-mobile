@@ -1,8 +1,11 @@
-import { Link, Stack } from 'expo-router';
+import React from 'react';
+import { Stack, useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import Button from '@/components/elements/Button';
-import { useRouter } from 'expo-router';
+import { useAuth } from '@/plugin/auth-provider/use-auth';
+import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
 
 const styles = StyleSheet.create({
   root: {
@@ -11,35 +14,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.lightGrayPurple,
-  },
-  link: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 22,
-    backgroundColor: colors.lightPurple,
-    height: 44,
-    width: '50%',
+    padding: 20,
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 28,
+    fontWeight: '700',
+    marginBottom: 16,
+    color: colors.gray,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: colors.blackGray,
+    textAlign: 'center',
+    marginBottom: 24,
   },
 });
 
 export default function NotFoundScreen() {
-      const router = useRouter();
+  const router = useRouter();
+  const { t } = useTranslation()
 
-  return (
+return (
     <View style={styles.root}>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <Link href="/" style={styles.link}>
-        <Button
-                title="Go Home"
-                onPress={() =>
+      <Stack.Screen options={{ title: t('common.errors.default') }} />
+      <Text style={styles.title}>404</Text>
+      <Text style={styles.subtitle}>{t('common.errors.default')}</Text>
+
+      <Button title={t('home.welcome')} onPress={() =>
                   router.push({ pathname: '/(main)/(tabs)/home'})
-                }
-              />
-      </Link>
+                } />
     </View>
   );
 }

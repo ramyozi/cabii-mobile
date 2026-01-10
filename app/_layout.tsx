@@ -2,18 +2,18 @@ import { Fragment, useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import BottomSheetContents from '@/components/layouts/BottomSheetContents';
 import BottomSheet from '@/components/elements/BottomSheet';
-import useColorScheme from '@/hooks/useColorScheme';
 import { colors, loadFonts, loadImages } from '@/theme';
-import { Redirect, Slot } from 'expo-router';
+import { Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import Provider from '@/providers';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import '../i18n.config';
+import { useAppTheme } from '@/plugin/theme-provider';
 
 SplashScreen.preventAutoHideAsync();
 
 function Router() {
-  const { isDark } = useColorScheme();
+  const { isDark } = useAppTheme();
   const { tokens, user, loading } = useAuth();
   const [isOpen, setOpen] = useState(false);
 
@@ -39,11 +39,13 @@ function Router() {
   return (
     <Fragment>
       <Slot />
-      <StatusBar style="light" />
+      <StatusBar style={isDark ? 'light' : 'dark'} />
       <BottomSheet
         isOpen={isOpen}
         initialOpen
-        backgroundStyle={isDark && { backgroundColor: colors.blackGray }}>
+        backgroundStyle={{
+          backgroundColor: isDark ? colors.dark.surface : colors.light.surface,
+        }}>
         <BottomSheetContents onClose={() => setOpen(false)} />
       </BottomSheet>
     </Fragment>

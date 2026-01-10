@@ -19,9 +19,11 @@ import {
   schemaRole,
 } from '@/scenes/auth/onboarding/onboarding.schemas';
 import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
+import { useAppTheme } from '@/plugin/theme-provider';
 
 export default function Onboarding() {
   const { t } = useTranslation();
+  const { theme } = useAppTheme();
   const router = useRouter();
   const { user, switchRole } = useAuth();
 
@@ -94,7 +96,7 @@ export default function Onboarding() {
       }
 
       Alert.alert(t('auth.signForm.messages.success'));
-      router.replace('/(main)/(tabs)/home');
+      router.replace('/(main)/(tabs)');
     } catch (e) {
       console.error(e);
       Alert.alert(t('auth.signForm.messages.error'));
@@ -102,7 +104,7 @@ export default function Onboarding() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.text }}>
       <MultiStepForm<OnboardingFormData>
         steps={steps}
         initialValues={initialValues}
@@ -111,7 +113,3 @@ export default function Onboarding() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.lightGrayPurple },
-});

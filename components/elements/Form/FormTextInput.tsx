@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, Text, View, TextInputProps } from 'react-native';
 import { Controller, useFormContext, FieldPath, FieldValues } from 'react-hook-form';
-import { colors } from '@/theme';
+import { useAppTheme } from '@/plugin/theme-provider';
 
 type Props<T extends FieldValues> = {
   name: FieldPath<T>;
@@ -16,29 +16,42 @@ export default function FormTextInput<T extends FieldValues>({ name, label, ...r
   const err = errors && (errors as any)[name];
   const message = err?.message ? String(err.message) : undefined;
 
+  const { theme } = useAppTheme();
+
   return (
     <View style={{ marginBottom: 12 }}>
-      {label ? <Text style={{ marginBottom: 6 }}>{label}</Text> : null}
+      {label ? (
+        <Text style={{ marginBottom: 6, color: theme.colors.text, fontWeight: '600' }}>
+          {label}
+        </Text>
+      ) : null}
+
       <Controller
         control={control}
         name={name}
         render={({ field: { onChange, value } }) => (
           <TextInput
-            value={value as any}
+            value={(value as any) ?? ''}
             onChangeText={onChange}
+            placeholderTextColor={theme.colors.outline}
             style={{
               borderWidth: 1,
-              borderColor: message ? 'red' : colors.gray,
-              borderRadius: 8,
-              padding: 10,
-              backgroundColor: colors.white,
-              color: colors.blackGray,
+              borderColor: message ? theme.colors.error : theme.colors.outline,
+              borderRadius: 10,
+              paddingHorizontal: 12,
+              paddingVertical: 12,
+              backgroundColor: theme.colors.surface,
+              color: theme.colors.text,
+              fontSize: 16,
             }}
             {...rest}
           />
         )}
       />
-      {message ? <Text style={{ color: 'red', fontSize: 12 }}>{message}</Text> : null}
+
+      {message ? (
+        <Text style={{ color: theme.colors.error, fontSize: 12, marginTop: 4 }}>{message}</Text>
+      ) : null}
     </View>
   );
 }

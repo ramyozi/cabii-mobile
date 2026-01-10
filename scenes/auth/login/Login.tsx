@@ -1,28 +1,51 @@
-import React from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '@/plugin/auth-provider/use-auth';
-import { colors } from '@/theme';
-import useColorScheme from '@/hooks/useColorScheme';
-import Button from '@/components/elements/Button';
 import { useTranslation } from 'react-i18next';
-import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
+import { z } from 'zod';
+import { Mail, Lock } from 'lucide-react-native';
+import {
+  Text,
+  TextInput,
+  Button,
+  HelperText,
+  Snackbar,
+  useTheme,
+  Card,
+  Divider,
+  Surface,
+} from 'react-native-paper';
+
+import { useAuth } from '@/plugin/auth-provider/use-auth';
+import { createFormValidator } from '@/utils/formValidator';
+import { mapServerError } from '@/utils/serverErrorMapper';
+
+const v = createFormValidator();
 
 const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(2, 'Password must be at least 6 characters'),
+  email: v.emailValidation(false),
+  password: v.passwordValidation(2, 52),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
 
 export default function Login() {
   const { t } = useTranslation();
+  const theme = useTheme();
   const router = useRouter();
-  const { isDark } = useColorScheme();
   const { signIn } = useAuth();
+
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     control,
@@ -34,133 +57,148 @@ export default function Login() {
   });
 
   const onSubmit = async (values: LoginForm) => {
+    setServerError(null);
     try {
-      await signIn(values.email, values.password, ActiveRoleEnum.Customer);
-      router.replace('/(main)/(tabs)/home');
-    } catch (error) {
-      console.error('Login failed:', error);
+      const result = await signIn(values.email, values.password);
+
+      if ((result as any)?.pendingRoleSelection) {
+        router.replace('/(session)/choose-role');
+      } else {
+        router.replace('/(main)/(tabs)/home');
+      }
+    } catch (error: any) {
+      setServerError(mapServerError(error, t));
     }
   };
 
   return (
     <KeyboardAvoidingView
-      style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}
+      style={[styles.root, { backgroundColor: theme.colors.background }]}
       behavior={Platform.select({ ios: 'padding', android: undefined })}>
-      <View style={styles.container}>
-        <Text style={[styles.title, isDark && { color: colors.gray }]}>
-          {t('auth.sign_in_title', 'Sign In')}
-        </Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
+          <Surface style={styles.surface} elevation={3}>
+            <Card style={styles.card}>
+              <Card.Content>
+                <Text
+                  variant="headlineLarge"
+                  style={[styles.title, { color: theme.colors.primary }]}>
+                  {t('auth.login.title')}
+                </Text>
 
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <TextInput
-                style={[styles.input, isDark && styles.inputDark]}
-                placeholder={t('auth.email', 'Email')}
-                placeholderTextColor={isDark ? colors.gray : '#888'}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                value={value}
-                onChangeText={onChange}
-              />
-              {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
-            </>
-          )}
-        />
+                <Divider style={styles.divider} />
 
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, value } }) => (
-            <>
-              <TextInput
-                style={[styles.input, isDark && styles.inputDark]}
-                placeholder={t('auth.password', 'Password')}
-                placeholderTextColor={isDark ? colors.gray : '#888'}
-                secureTextEntry
-                value={value}
-                onChangeText={onChange}
-              />
-              {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
-            </>
-          )}
-        />
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({ field: { onChange, value } }) => (
+                    <>
+                      <TextInput
+                        label={t('auth.login.email')}
+                        mode="outlined"
+                        value={value}
+                        onChangeText={onChange}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        style={styles.input}
+                        error={!!errors.email}
+                        left={
+                          <TextInput.Icon
+                            icon={() => <Mail size={20} color={theme.colors.primary} />}
+                          />
+                        }
+                      />
+                      <HelperText type="error" visible={!!errors.email}>
+                        {errors.email?.message}
+                      </HelperText>
+                    </>
+                  )}
+                />
 
-        <Button
-          title={
-            isSubmitting ? t('auth.signing_in', 'Signing in...') : t('auth.sign_in', 'Sign In')
-          }
-          style={styles.button}
-          titleStyle={styles.buttonTitle}
-          disabled={isSubmitting}
-          onPress={handleSubmit(onSubmit)}
-        />
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field: { onChange, value } }) => (
+                    <>
+                      <TextInput
+                        label={t('auth.login.password')}
+                        mode="outlined"
+                        secureTextEntry
+                        value={value}
+                        onChangeText={onChange}
+                        style={styles.input}
+                        error={!!errors.password}
+                        left={
+                          <TextInput.Icon
+                            icon={() => <Lock size={20} color={theme.colors.primary} />}
+                          />
+                        }
+                      />
+                      <HelperText type="error" visible={!!errors.password}>
+                        {errors.password?.message}
+                      </HelperText>
+                    </>
+                  )}
+                />
 
-        <Text
-          onPress={() => router.push('/(auth)/sign-up')}
-          style={[styles.link, isDark && { color: colors.lightPurple }]}>
-          {t('auth.no_account', "Don't have an account? Sign up")}
-        </Text>
-      </View>
+                <Button
+                  mode="contained"
+                  loading={isSubmitting}
+                  style={[styles.button, { backgroundColor: theme.colors.primary }]}
+                  onPress={handleSubmit(onSubmit)}>
+                  {t('auth.login.signIn')}
+                </Button>
+
+                <Text
+                  variant="bodyMedium"
+                  style={[styles.link, { color: theme.colors.primary }]}
+                  onPress={() => router.push('/(auth)/sign-up')}>
+                  {t('auth.login.noAccount')}
+                </Text>
+              </Card.Content>
+            </Card>
+          </Surface>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+
+      <Snackbar
+        visible={!!serverError}
+        onDismiss={() => setServerError(null)}
+        action={{ label: 'OK', onPress: () => setServerError(null) }}
+        style={{ backgroundColor: theme.colors.error }}>
+        {serverError}
+      </Snackbar>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
+  root: { flex: 1 },
+  scroll: {
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.lightGrayPurple,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
   },
-  container: {
-    width: '80%',
+  surface: {
+    width: '100%',
+    maxWidth: 420,
+    borderRadius: 20,
+    overflow: 'hidden',
   },
+  card: { borderRadius: 20 },
   title: {
-    fontSize: 26,
+    textAlign: 'center',
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 8,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.gray,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontSize: 16,
-    marginBottom: 10,
-    color: colors.blackGray,
-    backgroundColor: colors.white,
-  },
-  inputDark: {
-    borderColor: colors.darkPurple,
-    color: colors.white,
-    backgroundColor: colors.blackGray,
-  },
-  error: {
-    color: 'red',
-    fontSize: 13,
-    marginBottom: 5,
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: colors.lightPurple,
-    height: 48,
-    borderRadius: 25,
-    justifyContent: 'center',
-  },
-  buttonTitle: {
-    fontSize: 16,
-    color: colors.white,
-    textAlign: 'center',
-  },
+  divider: { marginBottom: 16 },
+  input: { marginBottom: 8 },
+  button: { marginTop: 20, borderRadius: 8 },
   link: {
     textAlign: 'center',
-    marginTop: 20,
-    fontSize: 14,
-    color: colors.darkPurple,
+    marginTop: 24,
+    textDecorationLine: 'underline',
   },
 });

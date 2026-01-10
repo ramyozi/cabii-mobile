@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useColorScheme from '@/hooks/useColorScheme';
 import { colors } from '@/theme';
+import { useAppTheme } from '@/plugin/theme-provider';
 
 const styles = StyleSheet.create({
   root: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 });
 
 export default function DrawerContents() {
-  const { isDark } = useColorScheme();
+  const { isDark } = useAppTheme();
   return (
     <SafeAreaView>
       <View style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>

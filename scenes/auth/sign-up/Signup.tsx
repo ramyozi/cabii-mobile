@@ -46,9 +46,9 @@ export default function Signup() {
         role: RoleEnum.User,
       });
 
-      await signIn(data.email, data.password, ActiveRoleEnum.Onboarding);
+      await signIn(data.email, data.password);
       Alert.alert(t('auth.signForm.messages.userCreated'));
-      router.replace('/onboarding');
+      router.replace('/(onboarding)');
     } catch (err) {
       console.error(err);
       Alert.alert(t('auth.signForm.messages.error'));

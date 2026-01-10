@@ -5,7 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ZodSchema } from 'zod';
 import * as Haptics from 'expo-haptics';
 import Button from '@/components/elements/Button';
-import { colors } from '@/theme';
+import { useAppTheme } from '@/plugin/theme-provider';
+import { useTranslation } from 'react-i18next';
 
 export type StepConfig<TForm extends FieldValues> = {
   id: string;
@@ -41,10 +42,13 @@ export default function MultiStepForm<TForm extends FieldValues>({
     resolver: steps[0]?.schema ? zodResolver(steps[0].schema as any) : undefined,
     mode: 'onTouched',
   });
+  const { theme } = useAppTheme();
+  const { t } = useTranslation();
 
   const values = methods.watch();
   const activeSteps = useMemo(
     () => steps.filter(s => (s.when ? s.when(values) : true)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [steps, JSON.stringify(values)],
   );
 
@@ -56,6 +60,7 @@ export default function MultiStepForm<TForm extends FieldValues>({
 
   useEffect(() => {
     methods.reset(methods.getValues(), { keepValues: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentId]);
 
   const handleNext = async () => {
@@ -91,25 +96,43 @@ export default function MultiStepForm<TForm extends FieldValues>({
     <FormProvider {...methods}>
       <View style={{ flex: 1, padding: 20 }}>
         <StepView form={methods} />
+
         <View style={{ flexDirection: 'row', marginTop: 24, gap: 8 }}>
           {canGoBack && !backLocked && (
             <Button
-              title="←"
+              title={t('auth.signForm.actions.back')}
               onPress={handleBack}
-              style={{ flex: 1, backgroundColor: colors.gray }}
+              style={{
+                flex: 1,
+                backgroundColor: theme.colors.outline,
+                borderRadius: 12,
+              }}
+              titleStyle={{ color: theme.colors.text }}
             />
           )}
+
           {step.skippable && (
             <Button
-              title="Passer"
+              title={t('auth.signForm.actions.skip')}
               onPress={handleSkip}
-              style={{ flex: 1, backgroundColor: colors.darkPurple }}
+              style={{
+                flex: 1,
+                backgroundColor: theme.colors.secondary,
+                borderRadius: 12,
+              }}
+              titleStyle={{ color: theme.colors.text }}
             />
           )}
+
           <Button
-            title={isLast ? 'Terminer' : 'Suivant'}
+            title={isLast ? t('auth.signForm.actions.done') : t('auth.signForm.actions.next')}
             onPress={handleNext}
-            style={{ flex: 1 }}
+            style={{
+              flex: 1,
+              backgroundColor: theme.colors.primary,
+              borderRadius: 12,
+            }}
+            titleStyle={{ color: '#FFFFFF' }}
           />
         </View>
       </View>

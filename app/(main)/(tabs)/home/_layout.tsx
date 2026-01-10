@@ -2,12 +2,12 @@ import { Stack, useNavigation } from 'expo-router';
 import { DrawerActions } from '@react-navigation/native';
 import NavigationHeaderLeft from '@/components/layouts/NavigationHeaderLeft';
 import NavigationHeaderTitle from '@/components/layouts/NavigationHeaderTitle';
-import useColorScheme from '@/hooks/useColorScheme';
 import { colors } from '@/theme';
+import { useAppTheme } from '@/plugin/theme-provider';
 
 export default function HomeStackLayout() {
   const navigation = useNavigation();
-  const { isDark } = useColorScheme();
+  const { isDark } = useAppTheme();
   const toggleDrawer = () => navigation.dispatch(DrawerActions.toggleDrawer());
   return (
     <Stack

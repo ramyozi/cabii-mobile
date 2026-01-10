@@ -5,7 +5,7 @@ import NavigationHeaderTitle from '@/components/layouts/NavigationHeaderTitle';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 
-export default function ProfileStackLayout() {
+export default function SettingsStackLayout() {
   const navigation = useNavigation();
   const { isDark } = useAppTheme();
   const toggleDrawer = () => navigation.dispatch(DrawerActions.toggleDrawer());
@@ -19,7 +19,7 @@ export default function ProfileStackLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Profile',
+          title: 'Settings',
           headerTitle: () => <NavigationHeaderTitle />,
           headerLeft: () => <NavigationHeaderLeft onPress={toggleDrawer} />,
           headerTitleAlign: 'center',

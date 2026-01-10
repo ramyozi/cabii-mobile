@@ -61,7 +61,7 @@ React Native Expo SDK 54 project with TypeScript, Expo Router v6, Redux Toolkit,
 ### File Naming
 
 - **Components**: PascalCase (`Button.tsx`, `NavigationHeader.tsx`)
-- **Hooks**: camelCase with "use" prefix (`useColorScheme.ts`)
+- **Hooks**: camelCase with "use" prefix (`useDataPersist.ts`)
 - **Utils**: camelCase (`deviceInfo.ts`, `config.ts`)
 - **Types**: PascalCase (`User.ts`, `ApiResponse.ts`)
 

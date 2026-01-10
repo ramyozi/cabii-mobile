@@ -12,7 +12,7 @@ export default function OnboardingLayout() {
   }
 
   if (user.activeRole !== ActiveRoleEnum.Onboarding) {
-    return <Redirect href="/(main)/(tabs)/home" />;
+    return <Redirect href="/(main)/(tabs)" />;
   }
 
   return (
