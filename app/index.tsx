@@ -22,16 +22,15 @@ export default function Index() {
     return <Redirect href="/(onboarding)" />;
   }
 
-  const validRoles = [
-    ActiveRoleEnum.Admin,
-    ActiveRoleEnum.Driver,
-    ActiveRoleEnum.Customer,
-    ActiveRoleEnum.Onboarding,
-  ];
-
-  if (!user.activeRole || !validRoles.includes(user.activeRole)) {
-    return <Redirect href="/(session)/choose-role" />;
+  // Route based on active role
+  switch (user.activeRole) {
+    case ActiveRoleEnum.Customer:
+      return <Redirect href="/(passenger)/home" />;
+    case ActiveRoleEnum.Driver:
+      return <Redirect href="/(driver)/dashboard" />;
+    case ActiveRoleEnum.Admin:
+      return <Redirect href="/(main)/(tabs)/home" />;
+    default:
+      return <Redirect href="/(session)/choose-role" />;
   }
-
-  return <Redirect href="/(main)/(tabs)/home" />;
 }
