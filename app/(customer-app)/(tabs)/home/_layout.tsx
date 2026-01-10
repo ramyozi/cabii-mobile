@@ -29,14 +29,14 @@ export default function CustomerHomeStackLayout() {
       <Stack.Screen
         name="book-ride"
         options={{
-          title: 'Book a Ride',
+          headerTitle: () => <NavigationHeaderTitle />,
           headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
         name="book-delivery"
         options={{
-          title: 'Book a Delivery',
+          headerTitle: () => <NavigationHeaderTitle />,
           headerTitleAlign: 'center',
         }}
       />

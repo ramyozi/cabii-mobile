@@ -29,14 +29,14 @@ export default function DriverDashboardStackLayout() {
       <Stack.Screen
         name="available-rides"
         options={{
-          title: 'Available Rides',
+          headerTitle: () => <NavigationHeaderTitle />,
           headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
         name="ride-details"
         options={{
-          title: 'Ride Details',
+          headerTitle: () => <NavigationHeaderTitle />,
           headerTitleAlign: 'center',
         }}
       />

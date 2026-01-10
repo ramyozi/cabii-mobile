@@ -2,6 +2,7 @@ import { Stack, useNavigation } from 'expo-router';
 import { DrawerActions } from '@react-navigation/native';
 import { useAppTheme } from '@/plugin/theme-provider';
 import { colors } from '@/theme';
+import NavigationHeaderTitle from '@/components/layouts/NavigationHeaderTitle';
 import NavigationHeaderLeft from '@/components/layouts/NavigationHeaderLeft';
 
 export default function CustomerTripsStackLayout() {
@@ -20,12 +21,18 @@ export default function CustomerTripsStackLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'My Trips',
+          headerTitle: () => <NavigationHeaderTitle />,
           headerLeft: () => <NavigationHeaderLeft onPress={toggleDrawer} />,
         }}
       />
-      <Stack.Screen name="trip-details" options={{ title: 'Trip Details' }} />
-      <Stack.Screen name="tracking" options={{ title: 'Live Tracking' }} />
+      <Stack.Screen
+        name="trip-details"
+        options={{ headerTitle: () => <NavigationHeaderTitle /> }}
+      />
+      <Stack.Screen
+        name="tracking"
+        options={{ headerTitle: () => <NavigationHeaderTitle /> }}
+      />
     </Stack>
   );
 }

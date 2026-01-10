@@ -2,6 +2,7 @@ import { Stack, useNavigation } from 'expo-router';
 import { DrawerActions } from '@react-navigation/native';
 import { useAppTheme } from '@/plugin/theme-provider';
 import { colors } from '@/theme';
+import NavigationHeaderTitle from '@/components/layouts/NavigationHeaderTitle';
 import NavigationHeaderLeft from '@/components/layouts/NavigationHeaderLeft';
 
 export default function DriverProfileStackLayout() {
@@ -20,14 +21,26 @@ export default function DriverProfileStackLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Profile',
+          headerTitle: () => <NavigationHeaderTitle />,
           headerLeft: () => <NavigationHeaderLeft onPress={toggleDrawer} />,
         }}
       />
-      <Stack.Screen name="edit-profile" options={{ title: 'Edit Profile' }} />
-      <Stack.Screen name="documents" options={{ title: 'Documents' }} />
-      <Stack.Screen name="vehicle" options={{ title: 'Vehicle' }} />
-      <Stack.Screen name="settings" options={{ title: 'Settings' }} />
+      <Stack.Screen
+        name="edit-profile"
+        options={{ headerTitle: () => <NavigationHeaderTitle /> }}
+      />
+      <Stack.Screen
+        name="documents"
+        options={{ headerTitle: () => <NavigationHeaderTitle /> }}
+      />
+      <Stack.Screen
+        name="vehicle"
+        options={{ headerTitle: () => <NavigationHeaderTitle /> }}
+      />
+      <Stack.Screen
+        name="settings"
+        options={{ headerTitle: () => <NavigationHeaderTitle /> }}
+      />
     </Stack>
   );
 }
