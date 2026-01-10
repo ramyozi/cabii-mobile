@@ -1,5 +1,7 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 import Button from '@/components/elements/Button';
@@ -47,41 +49,136 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
   },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  statBox: {
+    flex: 1,
+    padding: 12,
+    marginHorizontal: 4,
+    borderRadius: 8,
+    backgroundColor: colors.white,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: colors.gray,
+    marginBottom: 4,
+  },
+  statValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
 });
 
 export default function DriverDashboard() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { isDark } = useAppTheme();
+  const [isOnline, setIsOnline] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [stats, setStats] = useState({
+    tripsToday: 0,
+    earningsToday: 0,
+    availableRides: 0,
+  });
+
+  // TODO: Fetch real data from API
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      setLoading(true);
+      try {
+        // API call would go here
+        // const response = await driverService.getDashboardStats();
+        // setStats(response.data);
+
+        // Mock data for now
+        setStats({
+          tripsToday: 0,
+          earningsToday: 0,
+          availableRides: 0,
+        });
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   return (
     <ScrollView style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
       <View style={styles.content}>
-        <Text style={[styles.title, isDark && { color: colors.white }]}>Dashboard</Text>
+        <Text style={[styles.title, isDark && { color: colors.white }]}>
+          {t('driver.dashboard.title')}
+        </Text>
 
         <View style={[styles.statusSection, isDark && { backgroundColor: colors.darkGray }]}>
-          <Text style={[styles.statusText, { color: colors.green }]}>Status: Online</Text>
+          <Text
+            style={[
+              styles.statusText,
+              { color: isOnline ? colors.green : colors.gray },
+            ]}>
+            {t('driver.dashboard.status')}: {isOnline ? t('driver.dashboard.online') : t('driver.dashboard.offline')}
+          </Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Available Rides
-          </Text>
-          <Button
-            title="View Available Rides"
-            titleStyle={styles.buttonTitle}
-            style={styles.button}
-            onPress={() => router.push('/(driver)/dashboard/available-rides')}
-          />
-        </View>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.darkPurple} />
+          </View>
+        ) : (
+          <>
+            <View style={styles.section}>
+              <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
+                {t('driver.dashboard.availableRides')}
+              </Text>
+              {stats.availableRides > 0 ? (
+                <Button
+                  title={t('driver.dashboard.viewAvailableRides')}
+                  titleStyle={styles.buttonTitle}
+                  style={styles.button}
+                  onPress={() => router.push('/(driver-app)/(tabs)/dashboard/available-rides')}
+                />
+              ) : (
+                <Text style={[{ fontSize: 14 }, isDark && { color: colors.gray }]}>
+                  {t('driver.dashboard.noRides')}
+                </Text>
+              )}
+            </View>
 
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Today's Summary
-          </Text>
-          <Text style={[{ fontSize: 14 }, isDark && { color: colors.gray }]}>
-            Trips: 0 | Earnings: $0.00
-          </Text>
-        </View>
+            <View style={styles.section}>
+              <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
+                {t('driver.dashboard.todaySummary')}
+              </Text>
+              <View style={styles.statsContainer}>
+                <View style={[styles.statBox, isDark && { backgroundColor: colors.darkGray }]}>
+                  <Text style={[styles.statLabel, isDark && { color: colors.gray }]}>
+                    {t('driver.dashboard.trips')}
+                  </Text>
+                  <Text style={[styles.statValue, isDark && { color: colors.white }]}>
+                    {stats.tripsToday || 0}
+                  </Text>
+                </View>
+                <View style={[styles.statBox, isDark && { backgroundColor: colors.darkGray }]}>
+                  <Text style={[styles.statLabel, isDark && { color: colors.gray }]}>
+                    {t('driver.dashboard.earnings')}
+                  </Text>
+                  <Text style={[styles.statValue, isDark && { color: colors.white }]}>
+                    ${(stats.earningsToday || 0).toFixed(2)}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </>
+        )}
       </View>
     </ScrollView>
   );

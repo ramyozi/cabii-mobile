@@ -161,6 +161,7 @@
       "online": "En ligne",
       "offline": "Hors ligne",
       "availableRides": "Courses disponibles",
+      "viewAvailableRides": "Voir les courses disponibles",
       "todaySummary": "Résumé du jour",
       "trips": "Courses",
       "earnings": "Gains",
@@ -215,5 +216,18 @@
     "settings": "Paramètres",
     "logout": "Déconnexion",
     "currentRole": "Rôle actuel"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "theme": "Thème",
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair",
+    "systemDefault": "Système par défaut",
+    "preferences": "Préférences",
+    "account": "Compte",
+    "notifications": "Notifications",
+    "privacy": "Confidentialité",
+    "about": "À propos"
   }
 }
