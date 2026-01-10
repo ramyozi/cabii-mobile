@@ -79,8 +79,8 @@ export default function Onboarding() {
           userId: user.id,
           driverLicenseSerial: data.driver.driverLicenseSerial,
         });
-        await switchRole(ActiveRoleEnum.Driver);
 
+        // Upload documents and vehicles first
         for (const doc of data.driver.documents ?? []) {
           await driverDocumentService.upload({
             driverId: driverResponse.data.id,
@@ -93,6 +93,9 @@ export default function Onboarding() {
         for (const v of data.driver.vehicles ?? []) {
           await vehicleService.create({ ...v, driverId: driverResponse.data.id });
         }
+
+        // Switch role only after all data is successfully uploaded
+        await switchRole(ActiveRoleEnum.Driver);
       }
 
       Alert.alert(t('auth.signForm.messages.success'));
