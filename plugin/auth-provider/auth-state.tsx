@@ -54,6 +54,18 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
         tempAccessToken: null,
       };
 
+    case 'SET_TEMP_TOKEN':
+      return {
+        ...state,
+        tempAccessToken: action.payload,
+      };
+
+    case 'SET_USER':
+      return {
+        ...state,
+        user: action.payload,
+      };
+
     case 'UPDATE_USER':
       return {
         ...state,
