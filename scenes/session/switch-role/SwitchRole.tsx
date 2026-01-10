@@ -20,7 +20,8 @@ export default function ChooseRoleScreen() {
       setLoading(role);
       await switchRole(role);
       await new Promise(res => setTimeout(res, 300));
-      router.replace('/(main)/(tabs)');
+      // Redirect to root - index.tsx will handle role-based routing
+      router.replace('/');
     } finally {
       setLoading(null);
     }

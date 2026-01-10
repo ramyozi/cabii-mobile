@@ -1,0 +1,257 @@
+{
+  "auth": {
+    "signForm": {
+      "steps": {
+        "common": "Personal Information",
+        "role": "Choose your role",
+        "license": "Driver's License",
+        "docs": "Driver Documents",
+        "vehicle": "Vehicle",
+        "welcome": "Welcome to Cabii"
+      },
+      "fields": {
+        "firstname": "First Name",
+        "lastname": "Last Name",
+        "email": "Email Address",
+        "phone": "Phone",
+        "password": "Password",
+        "role": "Role",
+        "driverLicenseSerial": "Driver's License Number",
+        "doc_type": "Document Type",
+        "doc_file": "Document File",
+        "doc_expiry": "Expiry Date",
+        "vehicle_brand": "Vehicle Brand",
+        "vehicle_model": "Vehicle Model",
+        "vehicle_plate": "License Plate",
+        "vehicle_color": "Color",
+        "vehicle_chassis": "Chassis Number",
+        "vehicle_year": "Year",
+        "vehicle_category": "Vehicle Category"
+      },
+      "actions": {
+        "addDocument": "Add Document",
+        "addVehicle": "Add Vehicle",
+        "remove": "Remove",
+        "done": "Done",
+        "next": "Next",
+        "back": "Back",
+        "skip": "Skip this step",
+        "submit": "Create my account"
+      },
+      "messages": {
+        "hasVehicle": "Would you like to add a vehicle?",
+        "success": "Your account has been created successfully!",
+        "error": "An error occurred during registration.",
+        "userCreated": "Your user account has been created. Continue to complete your profile.",
+        "none": "No items added",
+        "summary": "Driver Profile Summary"
+      },
+      "roles": {
+        "customer": "Customer",
+        "driver": "Driver"
+      }
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email Address",
+      "password": "Password",
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "noAccount": "No account? Sign up",
+      "errors": {
+        "invalidCredentials": "Invalid email or password",
+        "missingDriverProfile": "This account does not have a driver profile",
+        "missingCustomerProfile": "This account does not have a customer profile",
+        "missingAnyProfile": "This account does not have an associated profile yet",
+        "notAdmin": "This account is not an administrator"
+      }
+    },
+    "chooseRole": {
+      "title": "Choose your role",
+      "subtitle": "Select how you would like to continue.",
+      "driverDesc": "Drive and help customers get around.",
+      "customerDesc": "Book your rides in a few clicks."
+    }
+  },
+  "common": {
+    "unknown": "Unknown",
+    "form": {
+      "error": {
+        "required": "This field is required",
+        "invalid_email": "Invalid email address",
+        "invalid_number": "Invalid number",
+        "invalid_format": "Invalid format",
+        "invalid_uuid": "Invalid identifier",
+        "min": "Minimum {{min}} characters",
+        "max": "Maximum {{max}} characters",
+        "password_min": "Password must contain at least {{min}} characters",
+        "password_max": "Password cannot exceed {{max}} characters",
+        "must_be_integer": "Value must be an integer",
+        "must_be_positive": "Value must be positive",
+        "min_items": "At least {{min}} item(s) required",
+        "max_items": "Maximum {{max}} item(s) allowed"
+      }
+    },
+    "errors": {
+      "forbidden": "You are not authorized to perform this action",
+      "network": "Network connection problem",
+      "timeout": "Server is taking too long to respond",
+      "default": "An error occurred. Please try again."
+    }
+  },
+  "home": {
+    "welcome": "Welcome",
+    "noRides": "No rides in progress",
+    "requestRide": "Request a ride",
+    "viewHistory": "View ride history"
+  },
+  "customer": {
+    "home": {
+      "title": "Home",
+      "bookRide": "Book a Ride",
+      "bookDelivery": "Book a Delivery",
+      "whereToGo": "Where are you going?",
+      "pickupLocation": "Pickup Location",
+      "dropoffLocation": "Destination",
+      "estimatedPrice": "Estimated Price",
+      "estimatedTime": "Estimated Time"
+    },
+    "trips": {
+      "title": "My Trips",
+      "active": "Active",
+      "history": "History",
+      "noTrips": "No trips",
+      "tripDetails": "Trip Details",
+      "liveTracking": "Live Tracking",
+      "driver": "Driver",
+      "vehicle": "Vehicle",
+      "pickupTime": "Pickup Time",
+      "dropoffTime": "Arrival Time",
+      "status": "Status"
+    },
+    "wallet": {
+      "title": "Wallet",
+      "balance": "Balance",
+      "paymentMethods": "Payment Methods",
+      "transactionHistory": "Transaction History",
+      "addPaymentMethod": "Add Payment Method",
+      "creditCard": "Credit Card",
+      "debitCard": "Debit Card",
+      "noPaymentMethods": "No payment methods",
+      "noTransactions": "No transactions"
+    },
+    "profile": {
+      "title": "Profile",
+      "editProfile": "Edit Profile",
+      "settings": "Settings",
+      "support": "Support",
+      "personalInfo": "Personal Information",
+      "preferences": "Preferences",
+      "notifications": "Notifications",
+      "privacy": "Privacy",
+      "helpCenter": "Help Center",
+      "contactSupport": "Contact Support",
+      "faq": "FAQ"
+    }
+  },
+  "driver": {
+    "dashboard": {
+      "title": "Dashboard",
+      "status": "Status",
+      "online": "Online",
+      "offline": "Offline",
+      "availableRides": "Available Rides",
+      "viewAvailableRides": "View Available Rides",
+      "todaySummary": "Today's Summary",
+      "trips": "Trips",
+      "earnings": "Earnings",
+      "noRides": "No available rides",
+      "rideDetails": "Ride Details",
+      "acceptRide": "Accept Ride",
+      "declineRide": "Decline Ride",
+      "availableRidesDescription": "Browse and accept ride requests from nearby passengers.",
+      "rideDetailsDescription": "View ride information: pickup/dropoff locations, passenger info, and estimated fare."
+    },
+    "current": {
+      "title": "Current Trip",
+      "noCurrentTrip": "No current trip",
+      "navigation": "Navigation",
+      "tripSummary": "Trip Summary",
+      "passenger": "Passenger",
+      "pickup": "Pickup",
+      "dropoff": "Dropoff",
+      "arrived": "Arrived",
+      "startTrip": "Start Trip",
+      "completeTrip": "Complete Trip",
+      "cancelTrip": "Cancel Trip",
+      "noActiveTrip": "No active trip",
+      "quickActions": "Quick Actions",
+      "openNavigation": "Open Navigation",
+      "viewTripSummary": "View Trip Summary",
+      "navigationDescription": "Turn-by-turn navigation to pickup and dropoff locations.",
+      "tripSummaryDescription": "View completed trip details: distance, duration, fare breakdown, and earnings."
+    },
+    "earnings": {
+      "title": "Earnings",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "history": "History",
+      "totalEarnings": "Total Earnings",
+      "tripsCompleted": "Trips Completed",
+      "averageRating": "Average Rating",
+      "todayEarnings": "Today's Earnings",
+      "weekEarnings": "This Week's Earnings",
+      "monthEarnings": "This Month's Earnings",
+      "noEarnings": "No earnings",
+      "breakdown": "Breakdown",
+      "dailyEarnings": "Daily Earnings",
+      "weeklyEarnings": "Weekly Earnings",
+      "earningsHistory": "Earnings History",
+      "dailyDescription": "View your earnings breakdown for each day.",
+      "weeklyDescription": "View your weekly earnings summary and trends.",
+      "historyDescription": "View your complete earnings history and past payouts."
+    },
+    "profile": {
+      "title": "Profile",
+      "editProfile": "Edit Profile",
+      "documents": "Documents",
+      "vehicle": "Vehicle",
+      "settings": "Settings",
+      "driverLicense": "Driver's License",
+      "insurance": "Insurance",
+      "registration": "Registration",
+      "vehicleInfo": "Vehicle Information",
+      "availability": "Availability",
+      "workingHours": "Working Hours",
+      "account": "Account",
+      "driverInfo": "Driver Information",
+      "myDocuments": "My Documents",
+      "myVehicle": "My Vehicle",
+      "signOut": "Sign Out",
+      "editProfileDescription": "Update your personal information: name, email, phone, and profile picture.",
+      "documentsDescription": "Manage your driver's license, insurance, and other required documents.",
+      "vehicleDescription": "View and update your vehicle information: make, model, year, and license plate.",
+      "settingsDescription": "Manage app preferences, notifications, availability hours, and privacy settings."
+    }
+  },
+  "drawer": {
+    "switchRole": "Switch Role",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "currentRole": "Current Role"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "systemDefault": "System Default",
+    "preferences": "Preferences",
+    "account": "Account",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "about": "About"
+  }
+}

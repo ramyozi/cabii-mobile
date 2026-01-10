@@ -3,6 +3,12 @@ import { View, ActivityIndicator } from 'react-native';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
 
+// Normalize role string for case-insensitive comparison
+function normalizeRole(role: string | undefined): string {
+  if (!role) return '';
+  return role.toUpperCase();
+}
+
 export default function Index() {
   const { tokens, user, loading } = useAuth();
 
@@ -18,20 +24,35 @@ export default function Index() {
     return <Redirect href="/(auth)/login" />;
   }
 
-  if (user.activeRole === ActiveRoleEnum.Onboarding) {
+  // Debug logging
+  console.log('[ROUTING DEBUG] User activeRole:', user.activeRole);
+  console.log('[ROUTING DEBUG] ActiveRoleEnum values:', ActiveRoleEnum);
+  console.log('[ROUTING DEBUG] Normalized activeRole:', normalizeRole(user.activeRole as string));
+
+  // Normalize for comparison
+  const normalizedActiveRole = normalizeRole(user.activeRole as string);
+
+  if (user.activeRole === ActiveRoleEnum.Onboarding || normalizedActiveRole === 'ONBOARDING') {
     return <Redirect href="/(onboarding)" />;
   }
 
-  const validRoles = [
-    ActiveRoleEnum.Admin,
-    ActiveRoleEnum.Driver,
-    ActiveRoleEnum.Customer,
-    ActiveRoleEnum.Onboarding,
-  ];
-
-  if (!user.activeRole || !validRoles.includes(user.activeRole)) {
-    return <Redirect href="/(session)/choose-role" />;
+  // Route based on active role (case-insensitive)
+  if (user.activeRole === ActiveRoleEnum.Customer || normalizedActiveRole === 'CUSTOMER') {
+    console.log('[ROUTING DEBUG] Redirecting to customer home');
+    return <Redirect href="/(customer-app)/(tabs)/home" />;
   }
 
-  return <Redirect href="/(main)/(tabs)/home" />;
+  if (user.activeRole === ActiveRoleEnum.Driver || normalizedActiveRole === 'DRIVER') {
+    console.log('[ROUTING DEBUG] Redirecting to driver dashboard');
+    return <Redirect href="/(driver-app)/(tabs)/dashboard" />;
+  }
+
+  if (user.activeRole === ActiveRoleEnum.Admin || normalizedActiveRole === 'ADMIN') {
+    console.log('[ROUTING DEBUG] Admin role detected - redirecting to customer app temporarily');
+    // TODO: Create dedicated admin interface
+    return <Redirect href="/(customer-app)/(tabs)/home" />;
+  }
+
+  console.log('[ROUTING DEBUG] No valid role, redirecting to choose-role');
+  return <Redirect href="/(session)/choose-role" />;
 }

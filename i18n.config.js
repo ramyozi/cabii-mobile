@@ -9,10 +9,12 @@ import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import fr from './messages/fr.json';
+import en from './messages/en.json';
 import { getLocales } from 'expo-localization';
 
 const resources = {
   fr: { translation: fr },
+  en: { translation: en },
 };
 
 const getLanguage = () => {

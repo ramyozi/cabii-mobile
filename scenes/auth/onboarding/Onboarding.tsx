@@ -96,7 +96,8 @@ export default function Onboarding() {
       }
 
       Alert.alert(t('auth.signForm.messages.success'));
-      router.replace('/(main)/(tabs)');
+      // Redirect to root - index.tsx will handle role-based routing
+      router.replace('/');
     } catch (e) {
       console.error(e);
       Alert.alert(t('auth.signForm.messages.error'));

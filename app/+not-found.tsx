@@ -40,9 +40,10 @@ return (
       <Text style={styles.title}>404</Text>
       <Text style={styles.subtitle}>{t('common.errors.default')}</Text>
 
-      <Button title={t('home.welcome')} onPress={() =>
-                  router.push({ pathname: '/(main)/(tabs)/home'})
-                } />
+      <Button
+        title={t('home.welcome')}
+        onPress={() => router.push('/')}
+      />
     </View>
   );
 }

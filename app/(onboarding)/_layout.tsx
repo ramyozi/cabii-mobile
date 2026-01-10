@@ -12,7 +12,8 @@ export default function OnboardingLayout() {
   }
 
   if (user.activeRole !== ActiveRoleEnum.Onboarding) {
-    return <Redirect href="/(main)/(tabs)" />;
+    // Redirect to root - index.tsx will handle role-based routing
+    return <Redirect href="/" />;
   }
 
   return (
