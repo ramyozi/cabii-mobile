@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 
@@ -19,13 +20,16 @@ const styles = StyleSheet.create({
 });
 
 export default function AvailableRides() {
+  const { t } = useTranslation();
   const { isDark } = useAppTheme();
 
   return (
     <View style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
-      <Text style={[styles.title, isDark && { color: colors.white }]}>Available Rides</Text>
+      <Text style={[styles.title, isDark && { color: colors.white }]}>
+        {t('driver.dashboard.availableRides')}
+      </Text>
       <Text style={[styles.description, isDark && { color: colors.gray }]}>
-        Browse and accept ride requests from nearby passengers.
+        {t('driver.dashboard.availableRidesDescription')}
       </Text>
     </View>
   );

@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 
@@ -19,13 +20,16 @@ const styles = StyleSheet.create({
 });
 
 export default function AddPaymentMethod() {
+  const { t } = useTranslation();
   const { isDark } = useAppTheme();
 
   return (
     <View style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
-      <Text style={[styles.title, isDark && { color: colors.white }]}>Add Payment Method</Text>
+      <Text style={[styles.title, isDark && { color: colors.white }]}>
+        {t('customer.wallet.addPaymentMethod')}
+      </Text>
       <Text style={[styles.description, isDark && { color: colors.gray }]}>
-        Add a new credit card, debit card, or payment method to your wallet.
+        {t('customer.wallet.creditCard')}, {t('customer.wallet.debitCard')}
       </Text>
     </View>
   );

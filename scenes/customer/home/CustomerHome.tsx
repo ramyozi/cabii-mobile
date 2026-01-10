@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 import Button from '@/components/elements/Button';
@@ -34,26 +35,29 @@ const styles = StyleSheet.create({
 });
 
 export default function CustomerHome() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { isDark } = useAppTheme();
 
   return (
     <View style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
-      <Text style={[styles.title, isDark && { color: colors.white }]}>Welcome Passenger</Text>
+      <Text style={[styles.title, isDark && { color: colors.white }]}>
+        {t('home.welcome')}
+      </Text>
       <Text style={[styles.subtitle, isDark && { color: colors.gray }]}>
-        Choose your service
+        {t('customer.home.whereToGo')}
       </Text>
       <Button
-        title="Book a Ride"
+        title={t('customer.home.bookRide')}
         titleStyle={styles.buttonTitle}
         style={styles.button}
-        onPress={() => router.push('/(passenger)/home/book-ride')}
+        onPress={() => router.push('/(customer-app)/(tabs)/home/book-ride')}
       />
       <Button
-        title="Book a Delivery"
+        title={t('customer.home.bookDelivery')}
         titleStyle={styles.buttonTitle}
         style={styles.button}
-        onPress={() => router.push('/(passenger)/home/book-delivery')}
+        onPress={() => router.push('/(customer-app)/(tabs)/home/book-delivery')}
       />
     </View>
   );

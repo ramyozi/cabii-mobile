@@ -168,7 +168,9 @@
       "noRides": "Aucune course disponible",
       "rideDetails": "Détails de la course",
       "acceptRide": "Accepter la course",
-      "declineRide": "Refuser la course"
+      "declineRide": "Refuser la course",
+      "availableRidesDescription": "Parcourez et acceptez les demandes de courses des passagers à proximité.",
+      "rideDetailsDescription": "Consultez les informations de la course : lieux de prise en charge/destination, infos passager et tarif estimé."
     },
     "current": {
       "title": "Course en cours",
@@ -181,7 +183,13 @@
       "arrived": "Arrivé",
       "startTrip": "Démarrer la course",
       "completeTrip": "Terminer la course",
-      "cancelTrip": "Annuler la course"
+      "cancelTrip": "Annuler la course",
+      "noActiveTrip": "Aucune course active",
+      "quickActions": "Actions rapides",
+      "openNavigation": "Ouvrir la navigation",
+      "viewTripSummary": "Voir le résumé de la course",
+      "navigationDescription": "Navigation détaillée vers les lieux de prise en charge et de destination.",
+      "tripSummaryDescription": "Consultez les détails de la course terminée : distance, durée, répartition du tarif et gains."
     },
     "earnings": {
       "title": "Revenus",
@@ -194,7 +202,14 @@
       "todayEarnings": "Gains du jour",
       "weekEarnings": "Gains de la semaine",
       "monthEarnings": "Gains du mois",
-      "noEarnings": "Aucun revenu"
+      "noEarnings": "Aucun revenu",
+      "breakdown": "Répartition",
+      "dailyEarnings": "Gains journaliers",
+      "weeklyEarnings": "Gains hebdomadaires",
+      "earningsHistory": "Historique des revenus",
+      "dailyDescription": "Consultez la répartition de vos gains pour chaque jour.",
+      "weeklyDescription": "Consultez le résumé et les tendances de vos gains hebdomadaires.",
+      "historyDescription": "Consultez l'historique complet de vos gains et paiements passés."
     },
     "profile": {
       "title": "Profil",
@@ -207,7 +222,16 @@
       "registration": "Carte grise",
       "vehicleInfo": "Informations du véhicule",
       "availability": "Disponibilité",
-      "workingHours": "Heures de travail"
+      "workingHours": "Heures de travail",
+      "account": "Compte",
+      "driverInfo": "Informations du conducteur",
+      "myDocuments": "Mes documents",
+      "myVehicle": "Mon véhicule",
+      "signOut": "Se déconnecter",
+      "editProfileDescription": "Mettez à jour vos informations personnelles : nom, e-mail, téléphone et photo de profil.",
+      "documentsDescription": "Gérez votre permis de conduire, assurance et autres documents requis.",
+      "vehicleDescription": "Consultez et mettez à jour les informations de votre véhicule : marque, modèle, année et plaque d'immatriculation.",
+      "settingsDescription": "Gérez les préférences de l'application, les notifications, les heures de disponibilité et les paramètres de confidentialité."
     }
   },
   "drawer": {

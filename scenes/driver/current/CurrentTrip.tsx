@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 import Button from '@/components/elements/Button';
@@ -44,32 +45,35 @@ const styles = StyleSheet.create({
 });
 
 export default function CurrentTrip() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { isDark } = useAppTheme();
 
   return (
     <ScrollView style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
       <View style={styles.content}>
-        <Text style={[styles.title, isDark && { color: colors.white }]}>Current Trip</Text>
+        <Text style={[styles.title, isDark && { color: colors.white }]}>
+          {t('driver.current.title')}
+        </Text>
 
         <View style={styles.section}>
           <Text style={[styles.placeholder, isDark && { color: colors.gray }]}>
-            No active trip
+            {t('driver.current.noActiveTrip')}
           </Text>
         </View>
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Quick Actions
+            {t('driver.current.quickActions')}
           </Text>
           <Button
-            title="Open Navigation"
+            title={t('driver.current.openNavigation')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/current/navigation')}
           />
           <Button
-            title="View Trip Summary"
+            title={t('driver.current.viewTripSummary')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/current/trip-summary')}

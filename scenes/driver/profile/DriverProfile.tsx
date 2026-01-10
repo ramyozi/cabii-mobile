@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
 });
 
 export default function DriverProfile() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { isDark } = useAppTheme();
   const { signOut, user } = useAuth();
@@ -66,10 +68,10 @@ export default function DriverProfile() {
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Account
+            {t('driver.profile.account')}
           </Text>
           <Button
-            title="Edit Profile"
+            title={t('driver.profile.editProfile')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/profile/edit-profile')}
@@ -78,16 +80,16 @@ export default function DriverProfile() {
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Driver Information
+            {t('driver.profile.driverInfo')}
           </Text>
           <Button
-            title="My Documents"
+            title={t('driver.profile.myDocuments')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/profile/documents')}
           />
           <Button
-            title="My Vehicle"
+            title={t('driver.profile.myVehicle')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/profile/vehicle')}
@@ -96,10 +98,10 @@ export default function DriverProfile() {
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Settings
+            {t('driver.profile.settings')}
           </Text>
           <Button
-            title="Settings"
+            title={t('driver.profile.settings')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/profile/settings')}
@@ -107,7 +109,7 @@ export default function DriverProfile() {
         </View>
 
         <Button
-          title="Sign Out"
+          title={t('driver.profile.signOut')}
           titleStyle={styles.buttonTitle}
           style={[styles.button, styles.logoutButton]}
           onPress={handleSignOut}

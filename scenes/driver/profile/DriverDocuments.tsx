@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 
@@ -19,13 +20,16 @@ const styles = StyleSheet.create({
 });
 
 export default function DriverDocuments() {
+  const { t } = useTranslation();
   const { isDark } = useAppTheme();
 
   return (
     <View style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
-      <Text style={[styles.title, isDark && { color: colors.white }]}>My Documents</Text>
+      <Text style={[styles.title, isDark && { color: colors.white }]}>
+        {t('driver.profile.myDocuments')}
+      </Text>
       <Text style={[styles.description, isDark && { color: colors.gray }]}>
-        Manage your driver's license, insurance, and other required documents.
+        {t('driver.profile.documentsDescription')}
       </Text>
     </View>
   );

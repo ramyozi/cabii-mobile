@@ -1,106 +1,36 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
-import { useAuth } from '@/plugin/auth-provider/use-auth';
-import Button from '@/components/elements/Button';
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: colors.lightGrayPurple,
-  },
-  content: {
     padding: 20,
+    backgroundColor: colors.lightGrayPurple,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  section: {
-    marginBottom: 30,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    backgroundColor: colors.darkPurple,
-    marginBottom: 8,
-  },
-  buttonTitle: {
+  description: {
     fontSize: 16,
-    color: colors.white,
-    textAlign: 'center',
-  },
-  logoutButton: {
-    backgroundColor: colors.red,
   },
 });
 
 export default function CustomerProfile() {
-  const router = useRouter();
+  const { t } = useTranslation();
   const { isDark } = useAppTheme();
-  const { signOut, user } = useAuth();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      router.replace('/(auth)/login');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
 
   return (
-    <ScrollView style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
-      <View style={styles.content}>
-        <Text style={[styles.title, isDark && { color: colors.white }]}>
-          {user?.firstName} {user?.lastName}
-        </Text>
-
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Account
-          </Text>
-          <Button
-            title="Edit Profile"
-            titleStyle={styles.buttonTitle}
-            style={styles.button}
-            onPress={() => router.push('/(passenger)/profile/edit-profile')}
-          />
-          <Button
-            title="Settings"
-            titleStyle={styles.buttonTitle}
-            style={styles.button}
-            onPress={() => router.push('/(passenger)/profile/settings')}
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Help & Support
-          </Text>
-          <Button
-            title="Support"
-            titleStyle={styles.buttonTitle}
-            style={styles.button}
-            onPress={() => router.push('/(passenger)/profile/support')}
-          />
-        </View>
-
-        <Button
-          title="Sign Out"
-          titleStyle={styles.buttonTitle}
-          style={[styles.button, styles.logoutButton]}
-          onPress={handleSignOut}
-        />
-      </View>
-    </ScrollView>
+    <View style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
+      <Text style={[styles.title, isDark && { color: colors.white }]}>
+        {t('customer.profile.title')}
+      </Text>
+      <Text style={[styles.description, isDark && { color: colors.gray }]}>
+        {t('customer.profile.personalInfo')}
+      </Text>
+    </View>
   );
 }

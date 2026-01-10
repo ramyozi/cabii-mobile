@@ -168,7 +168,9 @@
       "noRides": "No available rides",
       "rideDetails": "Ride Details",
       "acceptRide": "Accept Ride",
-      "declineRide": "Decline Ride"
+      "declineRide": "Decline Ride",
+      "availableRidesDescription": "Browse and accept ride requests from nearby passengers.",
+      "rideDetailsDescription": "View ride information: pickup/dropoff locations, passenger info, and estimated fare."
     },
     "current": {
       "title": "Current Trip",
@@ -181,7 +183,13 @@
       "arrived": "Arrived",
       "startTrip": "Start Trip",
       "completeTrip": "Complete Trip",
-      "cancelTrip": "Cancel Trip"
+      "cancelTrip": "Cancel Trip",
+      "noActiveTrip": "No active trip",
+      "quickActions": "Quick Actions",
+      "openNavigation": "Open Navigation",
+      "viewTripSummary": "View Trip Summary",
+      "navigationDescription": "Turn-by-turn navigation to pickup and dropoff locations.",
+      "tripSummaryDescription": "View completed trip details: distance, duration, fare breakdown, and earnings."
     },
     "earnings": {
       "title": "Earnings",
@@ -194,7 +202,14 @@
       "todayEarnings": "Today's Earnings",
       "weekEarnings": "This Week's Earnings",
       "monthEarnings": "This Month's Earnings",
-      "noEarnings": "No earnings"
+      "noEarnings": "No earnings",
+      "breakdown": "Breakdown",
+      "dailyEarnings": "Daily Earnings",
+      "weeklyEarnings": "Weekly Earnings",
+      "earningsHistory": "Earnings History",
+      "dailyDescription": "View your earnings breakdown for each day.",
+      "weeklyDescription": "View your weekly earnings summary and trends.",
+      "historyDescription": "View your complete earnings history and past payouts."
     },
     "profile": {
       "title": "Profile",
@@ -207,7 +222,16 @@
       "registration": "Registration",
       "vehicleInfo": "Vehicle Information",
       "availability": "Availability",
-      "workingHours": "Working Hours"
+      "workingHours": "Working Hours",
+      "account": "Account",
+      "driverInfo": "Driver Information",
+      "myDocuments": "My Documents",
+      "myVehicle": "My Vehicle",
+      "signOut": "Sign Out",
+      "editProfileDescription": "Update your personal information: name, email, phone, and profile picture.",
+      "documentsDescription": "Manage your driver's license, insurance, and other required documents.",
+      "vehicleDescription": "View and update your vehicle information: make, model, year, and license plate.",
+      "settingsDescription": "Manage app preferences, notifications, availability hours, and privacy settings."
     }
   },
   "drawer": {

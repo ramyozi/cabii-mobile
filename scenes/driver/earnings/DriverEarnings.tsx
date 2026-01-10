@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 import { useAppTheme } from '@/plugin/theme-provider';
 import Button from '@/components/elements/Button';
@@ -56,39 +57,42 @@ const styles = StyleSheet.create({
 });
 
 export default function DriverEarnings() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { isDark } = useAppTheme();
 
   return (
     <ScrollView style={[styles.root, isDark && { backgroundColor: colors.blackGray }]}>
       <View style={styles.content}>
-        <Text style={[styles.title, isDark && { color: colors.white }]}>Earnings</Text>
+        <Text style={[styles.title, isDark && { color: colors.white }]}>
+          {t('driver.earnings.title')}
+        </Text>
 
         <View style={[styles.summaryCard, isDark && { backgroundColor: colors.darkGray }]}>
           <Text style={[styles.summaryTitle, isDark && { color: colors.white }]}>
-            Total Earnings
+            {t('driver.earnings.totalEarnings')}
           </Text>
           <Text style={styles.summaryAmount}>$0.00</Text>
         </View>
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, isDark && { color: colors.white }]}>
-            Breakdown
+            {t('driver.earnings.breakdown')}
           </Text>
           <Button
-            title="Daily Earnings"
+            title={t('driver.earnings.dailyEarnings')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/earnings/daily')}
           />
           <Button
-            title="Weekly Earnings"
+            title={t('driver.earnings.weeklyEarnings')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/earnings/weekly')}
           />
           <Button
-            title="Earnings History"
+            title={t('driver.earnings.earningsHistory')}
             titleStyle={styles.buttonTitle}
             style={styles.button}
             onPress={() => router.push('/(driver)/earnings/history')}
