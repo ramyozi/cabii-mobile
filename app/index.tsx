@@ -37,13 +37,9 @@ export default function Index() {
   }
 
   // Route based on active role (case-insensitive)
-  if (
-    user.activeRole === ActiveRoleEnum.Customer ||
-    normalizedActiveRole === 'CUSTOMER' ||
-    normalizedActiveRole === 'PASSENGER'
-  ) {
-    console.log('[ROUTING DEBUG] Redirecting to passenger home');
-    return <Redirect href="/(passenger)/home" />;
+  if (user.activeRole === ActiveRoleEnum.Customer || normalizedActiveRole === 'CUSTOMER') {
+    console.log('[ROUTING DEBUG] Redirecting to customer home');
+    return <Redirect href="/(customer)/home" />;
   }
 
   if (user.activeRole === ActiveRoleEnum.Driver || normalizedActiveRole === 'DRIVER') {
