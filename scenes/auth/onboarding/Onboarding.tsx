@@ -20,6 +20,7 @@ import {
 } from '@/scenes/auth/onboarding/onboarding.schemas';
 import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
 import { useAppTheme } from '@/plugin/theme-provider';
+import { mapServerError } from '@/utils/serverErrorMapper';
 
 export default function Onboarding() {
   const { t } = useTranslation();
@@ -67,7 +68,10 @@ export default function Onboarding() {
 
   const handleSubmit = async (data: OnboardingFormData) => {
     try {
-      if (!user?.id) return;
+      if (!user?.id) {
+        Alert.alert(t('auth.signForm.messages.error'), t('auth.signForm.messages.noUser'));
+        return;
+      }
 
       if (data.selectedRole === ActiveRoleEnum.Customer) {
         await customerProfileService.create({ userId: user.id });
@@ -98,12 +102,12 @@ export default function Onboarding() {
         await switchRole(ActiveRoleEnum.Driver);
       }
 
-      Alert.alert(t('auth.signForm.messages.success'));
       // Redirect to root - index.tsx will handle role-based routing
       router.replace('/');
-    } catch (e) {
-      console.error(e);
-      Alert.alert(t('auth.signForm.messages.error'));
+    } catch (err: any) {
+      console.error('Onboarding error:', err);
+      const errorMessage = mapServerError(err, t);
+      Alert.alert(t('auth.signForm.messages.error'), errorMessage);
     }
   };
 
