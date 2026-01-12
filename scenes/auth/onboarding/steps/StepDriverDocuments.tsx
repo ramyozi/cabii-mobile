@@ -12,7 +12,7 @@ export default function StepDriverDocuments() {
   const { fields, append, remove } = useFieldArray({ control, name: 'driver.documents' });
 
   return (
-    <View style={{ padding: 16 }}>
+    <View>
       <Text style={{ fontSize: 18, fontWeight: '600', marginBottom: 8 }}>
         {t('auth.signForm.fields.driverLicenseSerial')}
       </Text>
