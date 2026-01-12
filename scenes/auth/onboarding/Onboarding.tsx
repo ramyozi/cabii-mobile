@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Alert, View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors } from '@/theme';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import MultiStepForm, { StepConfig } from '@/components/elements/Form/MultiStepForm';
@@ -21,12 +22,50 @@ import {
 import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
 import { useAppTheme } from '@/plugin/theme-provider';
 import { mapServerError } from '@/utils/serverErrorMapper';
+import { useOnboardingProgress } from '@/hooks';
+
+const ONBOARDING_CONTEXT_KEY = 'onboarding:context';
 
 export default function Onboarding() {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const router = useRouter();
   const { user, switchRole } = useAuth();
+  const [context, setContext] = useState<'signup' | 'role-switch'>('signup');
+  const [initialValues, setInitialValues] = useState<OnboardingFormData>({
+    selectedRole: ActiveRoleEnum.Customer,
+    driver: { driverLicenseSerial: '', documents: [], vehicles: [] },
+  });
+
+  // Detect onboarding context and target role
+  useEffect(() => {
+    (async () => {
+      try {
+        const savedContext = await AsyncStorage.getItem(ONBOARDING_CONTEXT_KEY);
+
+        if (savedContext === 'role-switch') {
+          setContext('role-switch');
+          // Pre-select driver role for role-switch flow
+          setInitialValues({
+            selectedRole: ActiveRoleEnum.Driver,
+            driver: { driverLicenseSerial: '', documents: [], vehicles: [] },
+          });
+        }
+      } catch (error) {
+        console.error('Error detecting onboarding context:', error);
+      }
+    })();
+  }, []);
+
+  // Determine target role based on context
+  const targetRole = context === 'role-switch' ? ActiveRoleEnum.Driver : ActiveRoleEnum.Customer;
+
+  // Progress persistence hook
+  const { clearProgress } = useOnboardingProgress({
+    userId: user?.id,
+    targetRole,
+    context,
+  });
 
   const steps: StepConfig<OnboardingFormData>[] = useMemo(
     () => [
@@ -35,6 +74,8 @@ export default function Onboarding() {
         title: t('auth.signForm.steps.role'),
         schema: schemaRole,
         component: StepRoleSelect,
+        // Skip role selection if coming from role-switch (driver role pre-selected)
+        when: () => context === 'signup',
       },
       {
         id: 'docs',
@@ -58,13 +99,8 @@ export default function Onboarding() {
         when: d => d.selectedRole === ActiveRoleEnum.Driver,
       },
     ],
-    [t],
+    [t, context],
   );
-
-  const initialValues: OnboardingFormData = {
-    selectedRole: ActiveRoleEnum.Customer,
-    driver: { driverLicenseSerial: '', documents: [], vehicles: [] },
-  };
 
   const handleSubmit = async (data: OnboardingFormData) => {
     try {
@@ -101,6 +137,10 @@ export default function Onboarding() {
         // Switch role only after all data is successfully uploaded
         await switchRole(ActiveRoleEnum.Driver);
       }
+
+      // Clear onboarding context and progress
+      await AsyncStorage.removeItem(ONBOARDING_CONTEXT_KEY);
+      await clearProgress();
 
       // Redirect to root - index.tsx will handle role-based routing
       router.replace('/');
