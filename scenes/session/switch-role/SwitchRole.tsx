@@ -4,23 +4,64 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
-import { Card, Text, Surface, ActivityIndicator, Snackbar } from 'react-native-paper';
+import {
+  Card,
+  Text,
+  Surface,
+  ActivityIndicator,
+  Snackbar,
+  Dialog,
+  Button,
+  Portal,
+} from 'react-native-paper';
 import { Car, User } from 'lucide-react-native';
 import { useAppTheme } from '@/plugin/theme-provider';
 import { mapServerError } from '@/utils/serverErrorMapper';
+import { useProfileCheck } from '@/hooks';
+import { customerProfileService } from '@/services/customer-profile.service';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const ONBOARDING_CONTEXT_KEY = 'onboarding:context';
 
 export default function ChooseRoleScreen() {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const router = useRouter();
-  const { switchRole } = useAuth();
+  const { switchRole, user } = useAuth();
+  const { checkProfileForRole } = useProfileCheck();
   const [loading, setLoading] = useState<ActiveRoleEnum | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showDriverDialog, setShowDriverDialog] = useState(false);
 
   const handleSelect = async (role: ActiveRoleEnum) => {
     try {
       setLoading(role);
       setError(null);
+
+      // Check if profile exists for target role
+      const { hasProfile } = await checkProfileForRole(role);
+
+      if (!hasProfile) {
+        // Handle missing profile based on role
+        if (role === ActiveRoleEnum.Driver) {
+          // Driver profile missing - prompt user to create
+          setShowDriverDialog(true);
+          setLoading(null);
+          return;
+        } else if (role === ActiveRoleEnum.Customer) {
+          // Customer profile missing - auto-create
+          if (!user?.id) {
+            setError(t('auth.signForm.messages.noUser'));
+            setLoading(null);
+            return;
+          }
+
+          await customerProfileService.create({ userId: user.id });
+          // Profile created, continue with role switch
+        }
+      }
+
+      // Profile exists or was just created - switch role
       await switchRole(role);
       await new Promise(res => setTimeout(res, 300));
       // Redirect to root - index.tsx will handle role-based routing
@@ -32,6 +73,28 @@ export default function ChooseRoleScreen() {
     } finally {
       setLoading(null);
     }
+  };
+
+  const handleCreateDriverProfile = async () => {
+    try {
+      setShowDriverDialog(false);
+      setLoading(ActiveRoleEnum.Driver);
+
+      // Store context for onboarding flow
+      await AsyncStorage.setItem(ONBOARDING_CONTEXT_KEY, 'role-switch');
+
+      // Navigate to onboarding with driver role pre-selected
+      router.push('/(onboarding)');
+    } catch (err: any) {
+      console.error('Error navigating to driver onboarding:', err);
+      setError(t('auth.signForm.messages.error'));
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const handleCancelDriverProfile = () => {
+    setShowDriverDialog(false);
   };
 
   return (
@@ -99,6 +162,25 @@ export default function ChooseRoleScreen() {
         style={{ backgroundColor: theme.colors.error }}>
         {error}
       </Snackbar>
+
+      <Portal>
+        <Dialog visible={showDriverDialog} onDismiss={handleCancelDriverProfile}>
+          <Dialog.Title>{t('auth.chooseRole.driverProfileMissing.title')}</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium">
+              {t('auth.chooseRole.driverProfileMissing.message')}
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={handleCancelDriverProfile}>
+              {t('auth.chooseRole.driverProfileMissing.cancel')}
+            </Button>
+            <Button onPress={handleCreateDriverProfile} mode="contained">
+              {t('auth.chooseRole.driverProfileMissing.create')}
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </ScrollView>
   );
 }
