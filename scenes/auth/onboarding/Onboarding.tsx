@@ -262,6 +262,11 @@ export default function Onboarding() {
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }} edges={['top']}>
       {/* Skip Button Header */}
       <View style={styles.header}>
+        <RNText style={[styles.headerTitle, { color: theme.colors.text }]}>
+          {context === 'role-switch'
+            ? t('auth.signForm.titles.becomeDriver')
+            : t('auth.signForm.titles.setupProfile')}
+        </RNText>
         <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
           <RNText style={[styles.skipText, { color: theme.colors.primary }]}>
             {t('auth.signForm.actions.skipForNow')}
@@ -284,11 +289,17 @@ export default function Onboarding() {
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
+    backgroundColor: colors.white,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
   },
   skipButton: {
     paddingVertical: 8,
