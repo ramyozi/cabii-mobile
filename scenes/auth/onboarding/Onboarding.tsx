@@ -61,11 +61,21 @@ export default function Onboarding() {
   const targetRole = context === 'role-switch' ? ActiveRoleEnum.Driver : ActiveRoleEnum.Customer;
 
   // Progress persistence hook
-  const { clearProgress } = useOnboardingProgress({
+  const { saveProgress, clearProgress, progress } = useOnboardingProgress<OnboardingFormData>({
     userId: user?.id,
     targetRole,
     context,
   });
+
+  // Restore progress if available (after context is determined)
+  useEffect(() => {
+    if (progress && progress.formData && progress.context === context) {
+      setInitialValues(prev => ({
+        ...prev,
+        ...progress.formData,
+      }));
+    }
+  }, [progress, context]);
 
   const steps: StepConfig<OnboardingFormData>[] = useMemo(
     () => [
@@ -101,6 +111,17 @@ export default function Onboarding() {
     ],
     [t, context],
   );
+
+  // Save progress when moving to next step
+  const handleStepNext = async (stepId: string, data: OnboardingFormData) => {
+    try {
+      const currentStepIndex = steps.findIndex(s => s.id === stepId);
+      await saveProgress(currentStepIndex + 1, data);
+    } catch (error) {
+      console.error('Error saving onboarding progress:', error);
+      // Don't block navigation on save error
+    }
+  };
 
   const handleSubmit = async (data: OnboardingFormData) => {
     try {
@@ -157,6 +178,7 @@ export default function Onboarding() {
         steps={steps}
         initialValues={initialValues}
         onSubmit={handleSubmit}
+        onStepNext={handleStepNext}
       />
     </View>
   );
