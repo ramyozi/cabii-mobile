@@ -1,10 +1,18 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Alert, View, StyleSheet, TouchableOpacity, Text as RNText } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  View,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors } from '@/theme';
+import { Text, Button as PaperButton, Snackbar, useTheme, Card, Surface } from 'react-native-paper';
+
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import MultiStepForm, { StepConfig } from '@/components/elements/Form/MultiStepForm';
 import { customerProfileService } from '@/services/customer-profile.service';
@@ -21,7 +29,6 @@ import {
   schemaRole,
 } from '@/scenes/auth/onboarding/onboarding.schemas';
 import { ActiveRoleEnum } from '@ramyozi/cabii-shared';
-import { useAppTheme } from '@/plugin/theme-provider';
 import { mapServerError } from '@/utils/serverErrorMapper';
 import { useOnboardingProgress } from '@/hooks';
 
@@ -29,9 +36,10 @@ const ONBOARDING_CONTEXT_KEY = 'onboarding:context';
 
 export default function Onboarding() {
   const { t } = useTranslation();
-  const { theme } = useAppTheme();
+  const theme = useTheme();
   const router = useRouter();
   const { user, switchRole } = useAuth();
+  const [serverError, setServerError] = useState<string | null>(null);
   const [context, setContext] = useState<'signup' | 'role-switch'>('signup');
   const [initialValues, setInitialValues] = useState<OnboardingFormData>({
     selectedRole: ActiveRoleEnum.Customer,
@@ -126,9 +134,10 @@ export default function Onboarding() {
 
   // Allow user to skip onboarding and come back later
   const handleSkip = async () => {
+    setServerError(null);
     try {
       if (!user?.id) {
-        Alert.alert(t('auth.signForm.messages.error'), t('auth.signForm.messages.noUser'));
+        setServerError(t('auth.signForm.messages.noUser'));
         return;
       }
 
@@ -153,15 +162,15 @@ export default function Onboarding() {
       router.replace('/');
     } catch (err: any) {
       console.error('Error skipping onboarding:', err);
-      const errorMessage = mapServerError(err, t);
-      Alert.alert(t('auth.signForm.messages.error'), errorMessage);
+      setServerError(mapServerError(err, t));
     }
   };
 
   const handleSubmit = async (data: OnboardingFormData) => {
+    setServerError(null);
     try {
       if (!user?.id) {
-        Alert.alert(t('auth.signForm.messages.error'), t('auth.signForm.messages.noUser'));
+        setServerError(t('auth.signForm.messages.noUser'));
         return;
       }
 
@@ -182,10 +191,7 @@ export default function Onboarding() {
       if (data.selectedRole === ActiveRoleEnum.Driver) {
         // Validate driver license is provided
         if (!data.driver.driverLicenseSerial || data.driver.driverLicenseSerial.trim() === '') {
-          Alert.alert(
-            t('auth.signForm.messages.error'),
-            t('auth.signForm.messages.driverLicenseRequired'),
-          );
+          setServerError(t('auth.signForm.messages.driverLicenseRequired'));
           return;
         }
 
@@ -253,60 +259,79 @@ export default function Onboarding() {
       router.replace('/');
     } catch (err: any) {
       console.error('Onboarding error:', err);
-      const errorMessage = mapServerError(err, t);
-      Alert.alert(t('auth.signForm.messages.error'), errorMessage);
+      setServerError(mapServerError(err, t));
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }} edges={['top']}>
-      {/* Skip Button Header */}
-      <View style={styles.header}>
-        <RNText style={[styles.headerTitle, { color: theme.colors.text }]}>
-          {context === 'role-switch'
-            ? t('auth.signForm.titles.becomeDriver')
-            : t('auth.signForm.titles.setupProfile')}
-        </RNText>
-        <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
-          <RNText style={[styles.skipText, { color: theme.colors.primary }]}>
-            {t('auth.signForm.actions.skipForNow')}
-          </RNText>
-        </TouchableOpacity>
-      </View>
+    <KeyboardAvoidingView
+      style={[styles.root, { backgroundColor: theme.colors.background }]}
+      behavior={Platform.select({ ios: 'padding', android: undefined })}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
+          <Surface style={styles.surface} elevation={3}>
+            <Card style={styles.card}>
+              <Card.Content>
+                <View style={styles.header}>
+                  <Text
+                    variant="headlineSmall"
+                    style={[styles.title, { color: theme.colors.primary }]}>
+                    {context === 'role-switch'
+                      ? t('auth.signForm.titles.becomeDriver')
+                      : t('auth.signForm.titles.setupProfile')}
+                  </Text>
+                  <PaperButton mode="text" onPress={handleSkip} compact>
+                    {t('auth.signForm.actions.skipForNow')}
+                  </PaperButton>
+                </View>
 
-      <View style={{ flex: 1 }}>
-        <MultiStepForm<OnboardingFormData>
-          steps={steps}
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-          onStepNext={handleStepNext}
-        />
-      </View>
-    </SafeAreaView>
+                <MultiStepForm<OnboardingFormData>
+                  steps={steps}
+                  initialValues={initialValues}
+                  onSubmit={handleSubmit}
+                  onStepNext={handleStepNext}
+                />
+              </Card.Content>
+            </Card>
+          </Surface>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+
+      <Snackbar
+        visible={!!serverError}
+        onDismiss={() => setServerError(null)}
+        action={{ label: 'OK', onPress: () => setServerError(null) }}
+        duration={6000}
+        style={{ backgroundColor: theme.colors.error }}>
+        {serverError}
+      </Snackbar>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1 },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+  },
+  surface: {
+    width: '100%',
+    maxWidth: 420,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  card: { borderRadius: 20 },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    backgroundColor: colors.white,
+    marginBottom: 16,
   },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  skipButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  skipText: {
-    fontSize: 16,
-    fontWeight: '600',
+  title: {
+    fontWeight: 'bold',
   },
 });
