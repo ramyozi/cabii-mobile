@@ -1,8 +1,9 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Alert, View, StyleSheet } from 'react-native';
+import { Alert, View, StyleSheet, TouchableOpacity, Text as RNText } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '@/theme';
 import { useAuth } from '@/plugin/auth-provider/use-auth';
 import MultiStepForm, { StepConfig } from '@/components/elements/Form/MultiStepForm';
@@ -123,6 +124,40 @@ export default function Onboarding() {
     }
   };
 
+  // Allow user to skip onboarding and come back later
+  const handleSkip = async () => {
+    try {
+      if (!user?.id) {
+        Alert.alert(t('auth.signForm.messages.error'), t('auth.signForm.messages.noUser'));
+        return;
+      }
+
+      // Save current progress (don't lose data)
+      await saveProgress(0, initialValues);
+
+      // Ensure user has a customer profile to land on
+      try {
+        await customerProfileService.create({ userId: user.id });
+      } catch (error) {
+        // Profile might already exist, that's OK
+        console.log('Customer profile might already exist:', error);
+      }
+
+      // Switch to customer role (safe default)
+      await switchRole(ActiveRoleEnum.Customer);
+
+      // Clear onboarding context (but keep progress for resume)
+      await AsyncStorage.removeItem(ONBOARDING_CONTEXT_KEY);
+
+      // Redirect to app
+      router.replace('/');
+    } catch (err: any) {
+      console.error('Error skipping onboarding:', err);
+      const errorMessage = mapServerError(err, t);
+      Alert.alert(t('auth.signForm.messages.error'), errorMessage);
+    }
+  };
+
   const handleSubmit = async (data: OnboardingFormData) => {
     try {
       if (!user?.id) {
@@ -173,13 +208,43 @@ export default function Onboarding() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.text }}>
-      <MultiStepForm<OnboardingFormData>
-        steps={steps}
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-        onStepNext={handleStepNext}
-      />
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }} edges={['top']}>
+      {/* Skip Button Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+          <RNText style={[styles.skipText, { color: theme.colors.primary }]}>
+            {t('auth.signForm.actions.skipForNow')}
+          </RNText>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ flex: 1 }}>
+        <MultiStepForm<OnboardingFormData>
+          steps={steps}
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          onStepNext={handleStepNext}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  skipButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  skipText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
