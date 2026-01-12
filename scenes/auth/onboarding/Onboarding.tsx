@@ -166,28 +166,79 @@ export default function Onboarding() {
       }
 
       if (data.selectedRole === ActiveRoleEnum.Customer) {
-        await customerProfileService.create({ userId: user.id });
+        try {
+          await customerProfileService.create({ userId: user.id });
+        } catch (createError: any) {
+          // Profile might already exist - that's OK, continue
+          console.log('Customer profile creation note:', createError.message || createError);
+          // Only fail if it's NOT a duplicate error
+          if (!createError.message?.toLowerCase().includes('already exists')) {
+            throw createError;
+          }
+        }
         await switchRole(ActiveRoleEnum.Customer);
       }
 
       if (data.selectedRole === ActiveRoleEnum.Driver) {
-        const driverResponse = await driverProfileService.create({
-          userId: user.id,
-          driverLicenseSerial: data.driver.driverLicenseSerial,
-        });
+        // Validate driver license is provided
+        if (!data.driver.driverLicenseSerial || data.driver.driverLicenseSerial.trim() === '') {
+          Alert.alert(
+            t('auth.signForm.messages.error'),
+            t('auth.signForm.messages.driverLicenseRequired'),
+          );
+          return;
+        }
+
+        let driverProfileId: string;
+
+        try {
+          const driverResponse = await driverProfileService.create({
+            userId: user.id,
+            driverLicenseSerial: data.driver.driverLicenseSerial,
+          });
+          driverProfileId = driverResponse.data.id;
+        } catch (createError: any) {
+          // Profile might already exist - try to get existing profile
+          console.log('Driver profile creation note:', createError.message || createError);
+          if (createError.message?.toLowerCase().includes('already exists')) {
+            // Get existing driver profile
+            const existingProfiles = await driverProfileService.getAll();
+            if (existingProfiles.data && existingProfiles.data.length > 0) {
+              driverProfileId = existingProfiles.data[0].id;
+            } else {
+              throw createError;
+            }
+          } else {
+            throw createError;
+          }
+        }
 
         // Upload documents and vehicles first
         for (const doc of data.driver.documents ?? []) {
-          await driverDocumentService.upload({
-            driverId: driverResponse.data.id,
-            documentType: doc.type,
-            filePath: doc.fileUrl,
-            expiryDate: doc.expiryDate,
-          });
+          if (doc.fileUrl && doc.fileUrl.trim() !== '') {
+            try {
+              await driverDocumentService.upload({
+                driverId: driverProfileId,
+                documentType: doc.type,
+                filePath: doc.fileUrl,
+                expiryDate: doc.expiryDate,
+              });
+            } catch (docError: any) {
+              console.error('Document upload error:', docError);
+              // Continue with other documents even if one fails
+            }
+          }
         }
 
         for (const v of data.driver.vehicles ?? []) {
-          await vehicleService.create({ ...v, driverId: driverResponse.data.id });
+          if (v.brand && v.model && v.plate) {
+            try {
+              await vehicleService.create({ ...v, driverId: driverProfileId });
+            } catch (vehicleError: any) {
+              console.error('Vehicle creation error:', vehicleError);
+              // Continue with other vehicles even if one fails
+            }
+          }
         }
 
         // Switch role only after all data is successfully uploaded
