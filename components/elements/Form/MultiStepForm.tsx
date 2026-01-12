@@ -94,7 +94,7 @@ export default function MultiStepForm<TForm extends FieldValues>({
 
   return (
     <FormProvider {...methods}>
-      <View style={{ flex: 1, padding: 20 }}>
+      <View>
         <StepView form={methods} />
 
         <View style={{ flexDirection: 'row', marginTop: 24, gap: 8 }}>

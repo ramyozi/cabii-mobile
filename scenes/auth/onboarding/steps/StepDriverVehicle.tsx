@@ -3,6 +3,8 @@ import { View, Text } from 'react-native';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Button from '@/components/elements/Button';
+import FormTextInput from '@/components/elements/Form/FormTextInput';
+import { colors } from '@/theme';
 
 type Form = {
   driver: {
@@ -31,7 +33,6 @@ export default function StepDriverVehicle() {
 
       {fields.length === 0 && <Text>{t('auth.signForm.messages.none')}</Text>}
 
-      {/* wip
       {fields.map((f, idx) => (
         <View
           key={f.id}
@@ -67,7 +68,6 @@ export default function StepDriverVehicle() {
           <Button title={t('auth.signForm.actions.remove')} onPress={() => remove(idx)} />
         </View>
       ))}
-      */}
 
       <Button
         title={t('auth.signForm.actions.addVehicle')}

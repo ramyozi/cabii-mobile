@@ -40,6 +40,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const tokens = JSON.parse(saved) as AuthTokenDto;
           apiClient.instance.defaults.headers.common['Authorization'] =
             `Bearer ${tokens.accessToken}`;
+          // Load user data with restored tokens
+          await reloadUser(dispatch);
         } else if (temp) {
           // No real tokens, but we have a temp token to reach /choose-role + /switch-role
           dispatch({ type: 'SET_TEMP_TOKEN', payload: temp });
@@ -53,14 +55,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           } catch {
             dispatch({ type: 'SET_USER', payload: null });
           }
-          dispatch({ type: 'SET_LOADING', payload: false });
-          return;
         } else {
           dispatch({ type: 'RESTORE_TOKENS', payload: null });
         }
       } catch (err) {
         console.error('Erreur de restauration des tokens:', err);
         dispatch({ type: 'RESTORE_TOKENS', payload: null });
+      } finally {
+        // Always set loading to false at the end
+        dispatch({ type: 'SET_LOADING', payload: false });
       }
     })();
   }, []);
@@ -125,7 +128,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const refreshTokens = async () => {
-    console.log('Refreshing tokens...');
     const saved = await AsyncStorage.getItem('authTokens');
     if (!saved) return;
 
