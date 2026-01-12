@@ -1,8 +1,8 @@
 export const colors = {
   /** Brand Core */
-  primary: '#6C5CE7',
-  primaryLight: '#9F7BFF',
-  primaryDark: '#5644C4',
+  primary: '#5BA7A9',
+  primaryLight: '#8FC1C3',
+  primaryDark: '#4A8688',
   secondary: '#A29BFE',
   secondaryLight: '#C9C4FF',
   secondaryDark: '#7B72DB',
@@ -69,23 +69,23 @@ export const colors = {
   shadowDark: 'rgba(0, 0, 0, 0.25)',
 
   /** Interactive States */
-  hover: 'rgba(108, 92, 231, 0.08)',
-  pressed: 'rgba(108, 92, 231, 0.12)',
-  focus: 'rgba(108, 92, 231, 0.15)',
+  hover: 'rgba(91, 167, 169, 0.08)',
+  pressed: 'rgba(91, 167, 169, 0.12)',
+  focus: 'rgba(91, 167, 169, 0.15)',
   disabled: '#E4E6EF',
   disabledDark: '#2E2E3A',
 
   /** Gradients */
-  gradientPrimary: ['#6C5CE7', '#A29BFE'],
+  gradientPrimary: ['#5BA7A9', '#8FC1C3'],
   gradientAccent: ['#FFD166', '#FF3D69'],
   gradientDark: ['#1B1B2F', '#2E2E3A'],
   gradientLight: ['#F8F9FC', '#FFFFFF'],
 
   /** Accessibility-focused Colors */
   focusOutline: '#FFD166',
-  link: '#5B5FEF',
-  linkHover: '#4A4BD6',
-  linkVisited: '#8B5FEF',
+  link: '#5BA7A9',
+  linkHover: '#4A8688',
+  linkVisited: '#7B9FA0',
   highContrastText: '#000000',
   lowContrastText: '#7A7A7A',
 
@@ -97,7 +97,7 @@ export const colors = {
     text: '#1B1B1B',
     textSecondary: '#4A4A4A',
     textTertiary: '#7A7A7A',
-    primary: '#6C5CE7',
+    primary: '#5BA7A9',
     accent: '#FFD166',
     border: '#E4E6EF',
     divider: '#C9CBD3',
@@ -109,7 +109,7 @@ export const colors = {
     text: '#E5E5E5',
     textSecondary: '#B0B0B0',
     textTertiary: '#7A7A7A',
-    primary: '#9F7BFF',
+    primary: '#8FC1C3',
     accent: '#FFD166',
     border: '#2E2F38',
     divider: '#4C4F59',
